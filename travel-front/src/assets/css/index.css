@@ -1,0 +1,245 @@
+.index {
+    width: 100%;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f5f7fa;
+    padding-bottom: 60px;
+    position: relative;
+}
+.index1 {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    /* background-image: url('../image/组件\ 1.png'); */
+    background-size: cover;
+    background-position: center;
+    margin-top: 80px;
+}
+.index2 {
+    width: 80%;
+    margin: 40px auto;
+    max-width: 1200px;
+    position: relative;
+}
+.index3 {
+    width: 100%;
+    text-align: center;
+    height: 50px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+.index4 {
+    width: 100%;
+    min-height: 380px;
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+.index5 {
+    height: 100%;
+    width: 32%;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    transition: all 0.3s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.index5:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+.index6 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background-color: #fff;
+}
+.index7 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 16px 16px 8px;
+    color: #409EFF;
+    font-size: 18px;
+    font-weight: 500;
+}
+.index8 {
+    margin: 0 16px;
+    color: #606266;
+    flex: 1;
+    overflow: hidden;
+    line-height: 1.6;
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    min-height: 4.8em;
+    position: relative;
+}
+.index8::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1.6em;
+    background: linear-gradient(transparent, #ffffff);
+    pointer-events: none;
+}
+.index9 {
+    margin: 16px;
+    width: 100px;
+    height: 36px;
+    border-radius: 18px;
+    background-color: #409EFF;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    align-self: flex-end;
+    position: relative;
+    z-index: 1;
+}
+.index9:hover {
+    background-color: #66b1ff;
+    transform: translateY(-2px);
+}
+.index10 {
+    width: 100%;
+    padding: 40px 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    margin: 40px 0;
+    position: relative;
+    overflow: hidden;
+}
+.image-collage {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    height: 450px;
+    padding: 20px 60px;
+}
+.image-item {
+    position: absolute;
+    width: 220px;
+    height: 180px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    transform-origin: center center;
+}
+
+/* 为每个图片设置不同的位置和旋转角度，创造重叠效果 */
+.image-item:nth-child(1) { top: 5%; left: 5%; transform: rotate(-8deg); z-index: 1; }
+.image-item:nth-child(2) { top: 15%; left: 20%; transform: rotate(5deg); z-index: 2; }
+.image-item:nth-child(3) { top: 8%; left: 38%; transform: rotate(-3deg); z-index: 3; }
+.image-item:nth-child(4) { top: 12%; left: 58%; transform: rotate(6deg); z-index: 4; }
+.image-item:nth-child(5) { top: 5%; left: 75%; transform: rotate(-4deg); z-index: 5; }
+.image-item:nth-child(6) { top: 45%; left: 8%; transform: rotate(7deg); z-index: 6; }
+.image-item:nth-child(7) { top: 42%; left: 28%; transform: rotate(-5deg); z-index: 7; }
+.image-item:nth-child(8) { top: 38%; left: 50%; transform: rotate(4deg); z-index: 8; }
+.image-item:nth-child(9) { top: 35%; left: 70%; transform: rotate(-6deg); z-index: 9; }
+
+.image-item:hover {
+    transform: scale(1.08) rotate(0deg) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    z-index: 20;
+}
+
+.image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.image-item:hover img {
+    transform: scale(1.1);
+}
+.image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+.image-item:hover .image-overlay {
+    transform: translateY(0);
+}
+.image-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.image-description {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .index2 {
+        width: 95%;
+    }
+    .index4 {
+        flex-direction: column;
+    }
+    .index5 {
+        width: 100%;
+    }
+    .image-collage {
+        width: 95%;
+        height: 400px;
+        padding: 20px 30px;
+    }
+    .image-item {
+        width: 180px;
+        height: 150px;
+    }
+    .image-item:nth-child(1) { top: 5%; left: 2%; }
+    .image-item:nth-child(2) { top: 12%; left: 15%; }
+    .image-item:nth-child(3) { top: 8%; left: 32%; }
+    .image-item:nth-child(4) { top: 10%; left: 48%; }
+    .image-item:nth-child(5) { top: 5%; left: 65%; }
+    .image-item:nth-child(6) { top: 45%; left: 5%; }
+    .image-item:nth-child(7) { top: 42%; left: 25%; }
+    .image-item:nth-child(8) { top: 38%; left: 45%; }
+    .image-item:nth-child(9) { top: 35%; left: 65%; }
+}
+
+@media (max-width: 480px) {
+    .image-collage {
+        height: 350px;
+        padding: 20px 15px;
+    }
+    .image-item {
+        width: 150px;
+        height: 120px;
+    }
+    .image-item:nth-child(1) { top: 5%; left: 0%; }
+    .image-item:nth-child(2) { top: 12%; left: 12%; }
+    .image-item:nth-child(3) { top: 8%; left: 28%; }
+    .image-item:nth-child(4) { top: 10%; left: 42%; }
+    .image-item:nth-child(5) { top: 5%; left: 58%; }
+    .image-item:nth-child(6) { top: 45%; left: 2%; }
+    .image-item:nth-child(7) { top: 42%; left: 20%; }
+    .image-item:nth-child(8) { top: 38%; left: 38%; }
+    .image-item:nth-child(9) { top: 35%; left: 55%; }
+}

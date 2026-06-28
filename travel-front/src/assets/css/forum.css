@@ -1,0 +1,269 @@
+.forum {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.forum-container {
+    max-width: 1200px;
+    margin: 80px auto 40px;
+    padding: 0 20px;
+}
+
+/* Header Section */
+.forum-header {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.search-section {
+    display: flex;
+    gap: 12px;
+    flex: 1;
+    max-width: 500px;
+}
+
+.economic-overview {
+    display: flex;
+    gap: 30px;
+}
+
+.overview-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.overview-item .label {
+    font-size: 13px;
+    color: #909399;
+}
+
+.overview-item .value {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.value.up { color: #f56c6c; }
+.value.down { color: #67c23a; }
+
+/* Main Layout */
+.forum-main {
+    display: flex;
+    gap: 30px;
+}
+
+.forum-content {
+    flex: 1;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #303133;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: #409eff;
+}
+
+/* News List */
+.news-item {
+    padding: 20px 0;
+    border-bottom: 1px solid #ebeef5;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.news-item:last-child {
+    border-bottom: none;
+}
+
+.news-item:hover {
+    transform: translateX(10px);
+}
+
+.news-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.news-tag {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.tag-finance {
+    background-color: #fef0f0;
+    color: #f56c6c;
+    border: 1px solid #fde2e2;
+}
+
+.tag-travel {
+    background-color: #ecf5ff;
+    color: #409eff;
+    border: 1px solid #d9ecff;
+}
+
+.news-date {
+    font-size: 13px;
+    color: #909399;
+}
+
+.news-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #303133;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.news-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #909399;
+}
+
+.news-footer .more {
+    color: #409eff;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Sidebar */
+.forum-sidebar {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.sidebar-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #303133;
+    padding-left: 10px;
+    border-left: 4px solid #409eff;
+}
+
+.exchange-rates {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rate-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rate-item .currency {
+    font-weight: 500;
+    color: #606266;
+}
+
+.rate-item .price {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+}
+
+.rate-item .change {
+    font-size: 12px;
+}
+
+.change.up { color: #f56c6c; }
+.change.down { color: #67c23a; }
+
+.card-footer {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ebeef5;
+    font-size: 12px;
+    color: #c0c4cc;
+    text-align: right;
+}
+
+.investment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.invest-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.invest-item .rank {
+    font-style: italic;
+    font-weight: 700;
+    color: #c0c4cc;
+    width: 20px;
+}
+
+.invest-item .name {
+    flex: 1;
+    font-size: 14px;
+    color: #606266;
+}
+
+.invest-item .el-progress {
+    width: 80px;
+}
+
+.invest-item .score {
+    font-size: 13px;
+    font-weight: 600;
+    color: #409eff;
+}
+
+.pagination-wrapper {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 992px) {
+    .forum-main {
+        flex-direction: column;
+    }
+    .forum-sidebar {
+        width: 100%;
+    }
+    .economic-overview {
+        display: none;
+    }
+}

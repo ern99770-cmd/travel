@@ -1,0 +1,143 @@
+.forumInfo {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    padding-top: 80px;
+    padding-bottom: 40px;
+}
+
+.forum-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 30px;
+}
+
+.forum-detail-main {
+    flex: 1;
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.article-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ebeef5;
+}
+
+.article-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #303133;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.article-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #909399;
+}
+
+.article-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.article-content {
+    line-height: 1.8;
+    color: #444;
+    font-size: 16px;
+}
+
+.article-content ::v-deep p {
+    margin-bottom: 20px;
+}
+
+.article-content ::v-deep img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+/* Sidebar */
+.forum-detail-sidebar {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.sidebar-widget {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.widget-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #303133;
+    padding-left: 10px;
+    border-left: 4px solid #409eff;
+}
+
+.financial-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tip-item {
+    display: flex;
+    gap: 12px;
+}
+
+.tip-item i {
+    color: #e6a23c;
+    font-size: 18px;
+    margin-top: 3px;
+}
+
+.tip-content {
+    font-size: 14px;
+    color: #606266;
+    line-height: 1.5;
+}
+
+.dest-economy {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.economy-stat {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.stat-label {
+    color: #909399;
+}
+
+.stat-value {
+    color: #303133;
+    font-weight: 600;
+}
+
+@media (max-width: 992px) {
+    .forum-detail-container {
+        flex-direction: column;
+    }
+    .forum-detail-sidebar {
+        width: 100%;
+    }
+}
