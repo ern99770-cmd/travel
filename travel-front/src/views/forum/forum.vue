@@ -1,7 +1,7 @@
 <template>
+  <PageLayout>
   <div class="forum">
-    <headers></headers>
-    <div class="forum-container">
+    <div class="forum-container page-container page-container--narrow">
       <!-- 顶部搜索和财经概览 -->
       <div class="forum-header">
         <div class="search-section">
@@ -92,14 +92,12 @@
         </div>
       </div>
     </div>
-    <bottoms></bottoms>
   </div>
+  </PageLayout>
 </template>
 
 <script>
   import {getSysForumPage} from '../../api/api'
-  import headers from '@/components/header'
-  import bottoms from '@/components/bottom'
   export default {
     data() {
       return{
@@ -124,10 +122,7 @@
         ]
       }
     },
-    components: {
-      headers,
-      bottoms
-    },
+    components: {},
     methods: {
       searchPage() {
         this.search.pageNumber = 1

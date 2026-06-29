@@ -15,6 +15,11 @@ import order from '@/views/system/attractions/order'
 import orderHotel from '@/views/system/hotel/order'
 import rotations from '@/views/system/rotations/rotations'
 import center from '@/views/system/center/center'
+import aiStats from '@/views/system/ai/aiStats'
+import memberCoupon from '@/views/system/member/coupon'
+import memberProduct from '@/views/system/member/product'
+import memberExchange from '@/views/system/member/exchange'
+import memberList from '@/views/system/member/memberList'
 import error404 from '@/views/error/404'
 
 Vue.use(VueRouter)
@@ -55,6 +60,31 @@ const routes = [
         path: 'forum',
         name: '资讯管理',
         component: forum
+      },
+      {
+        path: 'aiStats',
+        name: 'AI 使用统计',
+        component: aiStats
+      },
+      {
+        path: 'memberCoupon',
+        name: '优惠券管理',
+        component: memberCoupon
+      },
+      {
+        path: 'memberProduct',
+        name: '积分商品管理',
+        component: memberProduct
+      },
+      {
+        path: 'memberExchange',
+        name: '兑换记录',
+        component: memberExchange
+      },
+      {
+        path: 'memberList',
+        name: '会员管理',
+        component: memberList
       },
       {
         path: 'comments',

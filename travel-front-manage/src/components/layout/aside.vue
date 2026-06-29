@@ -33,6 +33,32 @@
                     <i class="el-icon-picture-outline-round"></i>
                     <span slot="title">资讯管理</span>
                 </el-menu-item>
+                <el-menu-item index="/aiStats@AI 使用统计">
+                    <i class="el-icon-data-analysis"></i>
+                    <span slot="title">AI 使用统计</span>
+                </el-menu-item>
+                <el-submenu index="2">
+                    <template slot="title">
+                        <i class="el-icon-medal"></i>
+                        <span v-if="!isCollapse">会员运营</span>
+                    </template>
+                    <el-menu-item index="/memberCoupon@优惠券管理">
+                        <i class="el-icon-s-ticket"></i>
+                        <span slot="title">优惠券管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="/memberProduct@积分商品管理">
+                        <i class="el-icon-goods"></i>
+                        <span slot="title">积分商品管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="/memberExchange@兑换记录">
+                        <i class="el-icon-s-order"></i>
+                        <span slot="title">兑换记录</span>
+                    </el-menu-item>
+                    <el-menu-item index="/memberList@会员管理">
+                        <i class="el-icon-user-solid"></i>
+                        <span slot="title">会员管理</span>
+                    </el-menu-item>
+                </el-submenu>
                 <el-menu-item index="/order@景点预约">
                     <i class="el-icon-s-promotion"></i>
                     <span slot="title">景点预约</span>

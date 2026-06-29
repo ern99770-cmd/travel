@@ -42,8 +42,14 @@ public class SysHotelController {
         queryWrapper.lambda()
                 .like(StringUtils.isNotBlank(sysHotel.getAttractions()),SysHotel::getAttractions,sysHotel.getAttractions())
                 .eq(sysHotel.getState() != null, SysHotel::getState,sysHotel.getState())
-                .like(StringUtils.isNotBlank(sysHotel.getName()),SysHotel::getName,sysHotel.getName())
-                .orderByDesc(SysHotel::getCreateTime);
+                .like(StringUtils.isNotBlank(sysHotel.getName()),SysHotel::getName,sysHotel.getName());
+        if (StringUtils.isNotBlank(sysHotel.getDestination())) {
+            queryWrapper.lambda().and(wrapper -> wrapper
+                    .like(SysHotel::getAttractions, sysHotel.getDestination())
+                    .or().like(SysHotel::getAddress, sysHotel.getDestination())
+                    .or().like(SysHotel::getName, sysHotel.getDestination()));
+        }
+        queryWrapper.lambda().orderByDesc(SysHotel::getCreateTime);
         Page<SysHotel> sysHotelPage = sysHotelService.page(page, queryWrapper);
         return Result.success(sysHotelPage);
     }

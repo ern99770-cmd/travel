@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './permission'
+import PageLayout from '@/components/PageLayout'
+import SearchPanel from '@/components/SearchPanel'
 import elementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueQuillEditor from 'vue-quill-editor'
@@ -15,6 +17,14 @@ import 'highlight.js/styles/default.css'
 Vue.use(VueQuillEditor)
 Vue.config.productionTip = false
 Vue.use(elementUI)
+Vue.component('PageLayout', PageLayout)
+Vue.component('SearchPanel', SearchPanel)
+
+router.afterEach((to) => {
+  if (to.path !== '/ai' && store.state.plan.loading && !store.state.plan.minimized) {
+    store.dispatch('plan/minimize')
+  }
+})
 
 //EventBus事件中转
 Vue.prototype.$bus = new Vue()  

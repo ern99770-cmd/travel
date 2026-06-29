@@ -82,9 +82,11 @@ public class SysMemberController {
     // 签到
     @PostMapping("/signin")
     public Result signIn(@RequestBody MemberRequest request) {
-        boolean success = memberService.signIn(request.getUserId());
-        if (success) {
-            return Result.success("签到成功");
+        int points = memberService.signIn(request.getUserId());
+        if (points > 0) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("pointsEarned", points);
+            return Result.success(data);
         } else {
             return Result.fail("今天已签到");
         }
@@ -174,6 +176,17 @@ public class SysMemberController {
         couponUser.setReceiveTime(now);
         couponUser.setExpireTime(expireTime);
         couponUserService.save(couponUser);
+
+        // 创建兑换记录（优惠券即时完成，无需发货）
+        SysExchangeRecord record = new SysExchangeRecord();
+        record.setUserId(request.getUserId());
+        record.setType(5);
+        record.setRelatedId(couponUser.getId());
+        record.setRelatedName(coupon.getName());
+        record.setPointsUsed(coupon.getPointsRequired());
+        record.setAmount(coupon.getDiscountAmount());
+        record.setStatus(1);
+        exchangeRecordService.save(record);
         
         // 记录积分日志
         SysPointsLog log = new SysPointsLog();
@@ -183,7 +196,7 @@ public class SysMemberController {
         log.setAfterPoints(afterPoints);
         log.setType(3);
         log.setDescription("兑换优惠券：" + coupon.getName());
-        log.setRelatedId(couponUser.getId());
+        log.setRelatedId(record.getId());
         pointsLogService.save(log);
         
         return Result.success("兑换成功");

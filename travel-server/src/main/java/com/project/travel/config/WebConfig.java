@@ -35,8 +35,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                         "/user/getEmailReg/**",
                         "/user/forgetPassword/**",
                         "/user/saveUser/**",
-                        // AI相关
-                        "/ai/**",
                         // 旅途印记相关 - 查看接口不需要登录
                         "/share/getSysTravelSharePage",
                         "/share/getSysTravelShareById",

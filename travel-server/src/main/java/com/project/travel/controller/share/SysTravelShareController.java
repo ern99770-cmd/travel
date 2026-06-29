@@ -8,6 +8,8 @@ import com.project.travel.domain.SysTravelShareLike;
 import com.project.travel.domain.User;
 import com.project.travel.domain.SysComments;
 import com.project.travel.enums.ResultCode;
+import com.project.travel.constant.PointsConstants;
+import com.project.travel.service.SysMemberService;
 import com.project.travel.service.SysCommentsService;
 import com.project.travel.service.SysTravelShareLikeService;
 import com.project.travel.service.SysTravelShareService;
@@ -21,7 +23,9 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 旅游分享Controller
@@ -42,6 +46,9 @@ public class SysTravelShareController {
 
     @Autowired
     private SysCommentsService sysCommentsService;
+
+    @Autowired
+    private SysMemberService sysMemberService;
 
     /**
      * 分页查询旅游分享
@@ -176,7 +183,15 @@ public class SysTravelShareController {
 
             boolean save = sysTravelShareService.save(sysTravelShare);
             if (save) {
-                return Result.success();
+                int points = sysMemberService.awardPointsOnce(
+                        userId,
+                        PointsConstants.PUBLISH_SHARE,
+                        PointsConstants.TYPE_INTERACTION,
+                        PointsConstants.DESC_PUBLISH_SHARE,
+                        sysTravelShare.getId());
+                Map<String, Object> data = new HashMap<>();
+                data.put("pointsEarned", points);
+                return Result.success(data);
             } else {
                 return Result.fail(ResultCode.COMMON_DATA_OPTION_ERROR.getMessage());
             }
@@ -269,6 +284,9 @@ public class SysTravelShareController {
     public Result likeShare(@RequestParam("shareId") String shareId) {
         try {
             String userId = TokenUtils.getUserIdByToken();
+            if (StringUtils.isBlank(userId)) {
+                return Result.fail("请先登录后再点赞");
+            }
 
             // 1. 查询分享是否存在
             SysTravelShare share = sysTravelShareService.getById(shareId);
@@ -326,7 +344,16 @@ public class SysTravelShareController {
                     return Result.fail("更新点赞数失败");
                 }
 
-                return Result.success("点赞成功");
+                int likePoints = sysMemberService.awardPointsOnce(
+                        userId,
+                        PointsConstants.LIKE_SHARE,
+                        PointsConstants.TYPE_INTERACTION,
+                        PointsConstants.DESC_LIKE_SHARE,
+                        shareId);
+
+                Map<String, Object> data = new HashMap<>();
+                data.put("pointsEarned", likePoints);
+                return Result.success(data);
             }
         } catch (Exception e) {
             e.printStackTrace();

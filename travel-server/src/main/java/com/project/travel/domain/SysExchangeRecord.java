@@ -26,7 +26,7 @@ public class SysExchangeRecord implements Serializable {
     @TableField("user_id")
     private String userId;
 
-    private Integer type; // 0: 商品, 1: 优惠券, 2: 景点门票, 3: 酒店
+    private Integer type; // 0:实物商品 1:纪念品 2:景点门票 3:酒店 4:会员购买 5:优惠券
 
     @TableField("related_id")
     private String relatedId; // 关联ID（商品ID、优惠券ID等）
@@ -70,4 +70,13 @@ public class SysExchangeRecord implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
+    @TableField(exist = false)
+    private Integer pageNumber;
+
+    @TableField(exist = false)
+    private Integer pageSize;
+
+    @TableField(exist = false)
+    private String userName;
 }

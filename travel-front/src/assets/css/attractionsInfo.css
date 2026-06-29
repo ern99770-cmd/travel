@@ -5,7 +5,7 @@
 }
 
 .attractionsInfo1 {
-    margin-top: 20px;
+    margin-top: 0;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -27,6 +27,10 @@
 .attractionsInfo4 {
     width: 40%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding-bottom: 24px;
 }
 
 .attractionsInfo5 {
@@ -41,27 +45,29 @@
     margin-top: 10px;
     margin-left: 20px;
     margin-right: 20px;
-    height: 330px;
-    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    line-height: 1.6;
+    color: #606266;
 }
 
 .attractionsInfo7 {
     display: flex;
-    align-items: flex-start;
-    /* 确保内容对齐方式是顶部对齐 */
+    align-items: center;
+    margin-left: 20px;
+    margin-top: auto;
+    padding-top: 16px;
+    flex-shrink: 0;
 }
 
 .attractionsInfo7 .el-button {
-    height: 30px;
-    /* 按钮高度 */
-    line-height: 30px;
-    /* 确保文字垂直居中 */
-    padding: 0 15px;
-    /* 调整按钮内边距 */
-    margin-top: -40px;
-    /* 向上移动按钮 */
-    /* 或者使用 transform */
-    /* transform: translateY(-10px); */
+    height: 40px;
+    line-height: 1;
+    padding: 0 28px;
+    margin-top: 0;
+    border-radius: 20px;
+    font-size: 15px;
 }
 
 .attractionsInfo8 {

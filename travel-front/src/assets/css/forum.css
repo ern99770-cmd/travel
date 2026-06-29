@@ -6,9 +6,7 @@
 }
 
 .forum-container {
-    max-width: 1200px;
-    margin: 80px auto 40px;
-    padding: 0 20px;
+    width: 100%;
 }
 
 /* Header Section */

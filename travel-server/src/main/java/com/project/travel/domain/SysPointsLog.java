@@ -34,7 +34,7 @@ public class SysPointsLog implements Serializable {
     @TableField("after_points")
     private Integer afterPoints; // 变动后积分
 
-    private Integer type; // 0: 签到, 1: 消费获取, 2: 兑换商品, 3: 兑换优惠券, 4: 兑换门票/酒店, 5: 系统赠送
+    private Integer type; // 0: 签到, 1: 消费获取, 2: 兑换商品, 3: 兑换优惠券, 4: 兑换门票/酒店, 5: 系统赠送, 6: 互动行为奖励
 
     private String description; // 描述
 

@@ -1,79 +1,73 @@
 <template>
-  <div class="centerPage">
-    <headerPage></headerPage>
+  <PageLayout>
+  <div class="centerPage page-container page-container--narrow">
     <div class="centerPage-content">
       <el-card class="box-card">
         <div slot="header" class="card-header">
           <span class="header-title">个人信息管理</span>
         </div>
-        <div class="content">
-            <div class="master">
-              <el-form style="margin-right:20px" :model="user" :rules="rules" ref="ruleForm" label-width="140px">
-                <el-form-item label="登陆账号" prop="loginAccount">
-                  <el-input size="mini" disabled v-model="user.loginAccount"></el-input>
-                </el-form-item>
-                <el-form-item label="用户名" prop="userName">
-                  <el-input size="mini" v-model="user.userName"></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                  <el-input size="mini" v-model="user.email"></el-input>
-                </el-form-item>
-                <el-form-item label="联系电话" prop="tel">
-                  <el-input size="mini" v-model="user.tel"></el-input>
-                </el-form-item>
-                <el-form-item label="所在地区" prop="location">
-                  <el-input size="mini" v-model="user.location" placeholder="请输入所在地区（如：北京市海淀区）"></el-input>
-                </el-form-item>
-                <el-form-item label="性别" prop="tel">
-                  <el-radio-group v-model="user.sex">
-                    <el-radio label="0">男</el-radio>
-                    <el-radio label="1">女</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item label="喜欢的景点类型" prop="scenicType">
-                  <el-checkbox-group v-model="scenicTypeList" class="scenic-type-group">
-                    <el-checkbox label="自然风光" class="scenic-type-item">自然风光</el-checkbox>
-                    <el-checkbox label="人文历史" class="scenic-type-item">人文历史</el-checkbox>
-                    <el-checkbox label="美食体验" class="scenic-type-item">美食体验</el-checkbox>
-                    <el-checkbox label="购物娱乐" class="scenic-type-item">购物娱乐</el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-                <el-form-item label="上次修改密码时间" prop="pwdUpdateDate">
-                  <el-input size="mini" disabled v-model="user.pwdUpdateDate"></el-input>
-                </el-form-item>
-              </el-form>
-              <div class="submit">
-                  <el-button type="primary" size="mini" icon="el-icon-check" class="save-btn" @click="submit">保存</el-button>
-                  <el-button type="danger" size="mini" icon="el-icon-switch-button" class="logout-btn" @click="logout">退出登录</el-button>
-              </div>
+        <div class="profile-header">
+          <div class="avatar-wrap">
+            <el-image
+              class="avatar-img"
+              :src="$store.state.HOST + user.avatar"
+              :preview-src-list="avatar"
+              fit="cover">
+            </el-image>
+          </div>
+          <div class="profile-meta">
+            <h3 class="profile-name">{{ user.userName || '用户' }}</h3>
+            <p class="profile-account">账号：{{ user.loginAccount }}</p>
+            <p v-if="user.pwdUpdateDate" class="profile-pwd-time">上次修改密码：{{ user.pwdUpdateDate }}</p>
+            <div class="profile-btns">
+              <el-upload
+                ref="upload"
+                :action="uploadAvatarUrl() + '/' + user.id"
+                :show-file-list="false"
+                :before-upload="beforeAvatorUpload"
+                :on-success="handleAvatorSuccess"
+                accept="image/*">
+                <el-button size="small" type="primary" plain icon="el-icon-picture-outline-round">修改头像</el-button>
+              </el-upload>
+              <el-button size="small" type="warning" plain icon="el-icon-key" @click="changePassword">修改密码</el-button>
             </div>
-            <div class="slave">
-                <div class="img">
-                  <el-image 
-                    style="object-fit: cover;width: 200px; height: 200px;overflow: hidden;border-radius: 50%;"
-                    :src="$store.state.HOST + user.avatar" 
-                    :preview-src-list="avatar">
-                  </el-image>
-                </div>
-                <div class="btns">
-                  <div>
-                    <el-upload
-                      ref="upload"
-                      :action="uploadAvatarUrl()+ '/'+ this.user.id"
-                      :show-file-list="false"
-                      :before-upload="beforeAvatorUpload"
-                      :on-success="handleAvatorSuccess"
-                      accept="image/*"
-                      >
-                      <el-button style="margin-top:15px" size="mini" type="primary" plain icon="el-icon-picture-outline-round">修改头像</el-button>
-                    </el-upload>
-                  </div>
-                  <div style="margin-top:15px">
-                    <el-button size="mini" type="warning" plain icon="el-icon-key" @click="changePassword">修改密码</el-button>
-                  </div>
-                </div>
-            </div>
+          </div>
         </div>
+
+        <el-form class="profile-form" :model="user" :rules="rules" ref="ruleForm" label-width="100px">
+          <div class="form-grid">
+            <el-form-item label="用户名" prop="userName">
+              <el-input v-model="user.userName" placeholder="请输入用户名"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="email">
+              <el-input v-model="user.email" placeholder="请输入邮箱"></el-input>
+            </el-form-item>
+            <el-form-item label="联系电话" prop="tel">
+              <el-input v-model="user.tel" placeholder="请输入联系电话"></el-input>
+            </el-form-item>
+            <el-form-item label="所在地区" prop="location">
+              <el-input v-model="user.location" placeholder="如：北京市海淀区"></el-input>
+            </el-form-item>
+            <el-form-item label="性别">
+              <el-radio-group v-model="user.sex">
+                <el-radio label="0">男</el-radio>
+                <el-radio label="1">女</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="景点偏好" class="form-item--full">
+              <el-checkbox-group v-model="scenicTypeList" class="scenic-type-group">
+                <el-checkbox label="自然风光">自然风光</el-checkbox>
+                <el-checkbox label="人文历史">人文历史</el-checkbox>
+                <el-checkbox label="美食体验">美食体验</el-checkbox>
+                <el-checkbox label="购物娱乐">购物娱乐</el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </div>
+          <div class="form-actions">
+            <el-button type="primary" icon="el-icon-check" @click="submit">保存</el-button>
+            <el-button type="danger" plain icon="el-icon-switch-button" @click="logout">退出登录</el-button>
+          </div>
+        </el-form>
       </el-card>
 
       <!-- 财经数据分析报表 -->
@@ -119,15 +113,12 @@
           <el-button size="mini" type="primary" @click="passwordSubmit">确 定</el-button>
         </span>
     </el-dialog>
-    
-    <bottomPage></bottomPage>
   </div>
+  </PageLayout>
 </template>
 
 <script>
   import {mixin} from "../../minix";
-  import headerPage from "../../components/header"
-  import bottomPage from "../../components/bottom"
   import * as echarts from 'echarts'
   import {getUser,setUserInfo,setUserAvatar,changePassword, getSysAttractionOrderPage, getSysHotelOrderPage, getSysAttractionsList, getExchangeRecords} from '../../api/api' 
   export default {
@@ -172,12 +163,12 @@
         attractionOrders: [],
         hotelOrders: [],
         attractions: [],
-        exchangeRecords: []
+        exchangeRecords: [],
+        categoryChart: null,
+        trendChart: null
       }
     },
     components: {
-      headerPage,
-      bottomPage
     },
     methods: {
       handlePasswordClose() {
@@ -374,86 +365,96 @@
         this.financialScore = Math.min(100, Math.max(0, 85 + (totalAttractionSpending > 0 ? 5 : 0) - (this.monthSpending / 1000)));
       },
       initCharts() {
-        // 1. 支出类别图表
-        const categoryChart = echarts.init(document.getElementById('categoryChart'));
+        const categoryEl = document.getElementById('categoryChart');
+        const trendEl = document.getElementById('trendChart');
+        if (!categoryEl || !trendEl) return;
+
+        if (this.categoryChart) this.categoryChart.dispose();
+        if (this.trendChart) this.trendChart.dispose();
+
+        this.categoryChart = echarts.init(categoryEl);
+        this.trendChart = echarts.init(trendEl);
+
         const attractionCost = this.attractionOrders.reduce((sum, order) => {
-            const attr = this.attractions.find(a => a.id === order.attractionsId);
-            return sum + (attr ? attr.price * order.num : 0);
+          const attr = this.attractions.find(a => a.id === order.attractionsId);
+          return sum + (attr ? attr.price * order.num : 0);
         }, 0);
         const hotelCost = this.hotelOrders.reduce((sum, order) => sum + (order.price || 0), 0);
         const memberCost = this.exchangeRecords
-            .filter(r => r.type === 4)
-            .reduce((sum, record) => sum + (record.amount ? parseFloat(record.amount) : 0), 0);
+          .filter(r => r.type === 4)
+          .reduce((sum, record) => sum + (record.amount ? parseFloat(record.amount) : 0), 0);
 
-        categoryChart.setOption({
-          title: { text: '支出占比分析', left: 'center' },
-          tooltip: { trigger: 'item' },
-          legend: { orient: 'vertical', left: 'left' },
-          series: [
-            {
-              name: '支出类别',
-              type: 'pie',
-              radius: '50%',
-              data: [
-                { value: attractionCost, name: '景点门票' },
-                { value: hotelCost, name: '酒店住宿' },
-                { value: memberCost, name: '会员购买' },
-                { value: 500, name: '餐饮交通(预估)' }
-              ],
-              emphasis: {
-                itemStyle: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
+        const pieData = [
+          { value: attractionCost, name: '景点门票' },
+          { value: hotelCost, name: '酒店住宿' },
+          { value: memberCost, name: '会员购买' }
+        ].filter(item => item.value > 0);
+
+        this.categoryChart.setOption({
+          title: { text: '支出占比分析', left: 'center', textStyle: { fontSize: 15, fontWeight: 600 } },
+          tooltip: { trigger: 'item', formatter: '{b}: ¥{c} ({d}%)' },
+          legend: { bottom: 0, left: 'center' },
+          color: ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C'],
+          series: [{
+            name: '支出类别',
+            type: 'pie',
+            radius: ['35%', '60%'],
+            center: ['50%', '45%'],
+            avoidLabelOverlap: true,
+            label: { show: pieData.length > 0, formatter: '{b}\n{d}%' },
+            data: pieData.length > 0 ? pieData : [{ value: 1, name: '暂无消费记录', itemStyle: { color: '#dcdfe6' } }]
+          }]
         });
 
-        // 2. 消费趋势图表
-        const trendChart = echarts.init(document.getElementById('trendChart'));
         const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
         const monthlyData = new Array(12).fill(0);
-        
+
         [...this.attractionOrders, ...this.hotelOrders].forEach(order => {
-            const date = new Date(order.createTime);
-            if (date.getFullYear() === new Date().getFullYear()) {
-                const month = date.getMonth();
-                const cost = order.price || (this.attractions.find(a => a.id === order.attractionsId)?.price * order.num) || 0;
-                monthlyData[month] += cost;
-            }
+          const date = new Date(order.createTime);
+          if (date.getFullYear() === new Date().getFullYear()) {
+            const month = date.getMonth();
+            const cost = order.price || (this.attractions.find(a => a.id === order.attractionsId)?.price * order.num) || 0;
+            monthlyData[month] += cost;
+          }
         });
 
-        // 将会员购买也加入趋势图
         this.exchangeRecords.forEach(record => {
-            if (record.type === 4) {
-                const date = new Date(record.createTime);
-                if (date.getFullYear() === new Date().getFullYear()) {
-                    const month = date.getMonth();
-                    const cost = record.amount ? parseFloat(record.amount) : 0;
-                    monthlyData[month] += cost;
-                }
+          if (record.type === 4) {
+            const date = new Date(record.createTime);
+            if (date.getFullYear() === new Date().getFullYear()) {
+              const month = date.getMonth();
+              const cost = record.amount ? parseFloat(record.amount) : 0;
+              monthlyData[month] += cost;
             }
+          }
         });
 
-        trendChart.setOption({
-          title: { text: '年度旅行消费趋势', left: 'center' },
-          xAxis: { type: 'category', data: months },
-          yAxis: { type: 'value' },
-          tooltip: { trigger: 'axis' },
+        this.trendChart.setOption({
+          title: { text: '年度旅行消费趋势', left: 'center', textStyle: { fontSize: 15, fontWeight: 600 } },
+          grid: { left: 50, right: 20, top: 50, bottom: 30 },
+          xAxis: { type: 'category', data: months, boundaryGap: false },
+          yAxis: { type: 'value', axisLabel: { formatter: '¥{value}' } },
+          tooltip: { trigger: 'axis', valueFormatter: val => '¥' + (val || 0).toFixed(2) },
           series: [{
             data: monthlyData,
             type: 'line',
             smooth: true,
+            symbol: 'circle',
+            symbolSize: 6,
+            lineStyle: { width: 2, color: '#409EFF' },
+            itemStyle: { color: '#409EFF' },
             areaStyle: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: 'rgba(64, 158, 255, 0.5)' },
-                    { offset: 1, color: 'rgba(64, 158, 255, 0)' }
-                ])
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(64, 158, 255, 0.35)' },
+                { offset: 1, color: 'rgba(64, 158, 255, 0.02)' }
+              ])
             }
           }]
         });
+      },
+      handleChartResize() {
+        if (this.categoryChart) this.categoryChart.resize();
+        if (this.trendChart) this.trendChart.resize();
       },
       changePassword() {
         //修改密码
@@ -491,191 +492,216 @@
      
     },
     mounted() {
-      // 监听collapse
-      this.$bus.$on('password', res=>{
+      this.$bus.$on('password', res => {
         this.passwordDialogVisible = res
       })
+      window.addEventListener('resize', this.handleChartResize)
       this.getUserInfo()
+    },
+    beforeDestroy() {
+      window.removeEventListener('resize', this.handleChartResize)
+      if (this.categoryChart) this.categoryChart.dispose()
+      if (this.trendChart) this.trendChart.dispose()
     }
  }
 </script>
 
 <style scoped>
   .centerPage {
-      width: 100%;
-      height: 100%;
-      min-height: 100vh;
-      background-color: #f5f7fa;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f5f7fa;
   }
+
   .centerPage-content {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin-top: 100px; /* 增加顶部间距，避免被头部遮挡 */
-      padding-bottom: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+    padding-bottom: 40px;
   }
+
   .box-card {
-      margin-top: 30px;
-      margin-bottom: 30px;
-      width: 70%;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
+    width: 100%;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    border: none;
   }
+
   .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #ebeef5;
-    padding-bottom: 15px;
   }
+
   .header-title {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 17px;
+    font-weight: 600;
     color: #303133;
   }
-  .content {
-      width: 100%;
-      min-height: 550px;
-      display: flex;
-      flex-direction: row;
-      font-family: "黑体";
+
+  .header-title i {
+    margin-right: 4px;
+    color: #409EFF;
   }
-  @media screen and (max-width: 768px) {
-    .content {
-      flex-direction: column-reverse;
-    }
-    .master, .slave {
-      width: 100% !important;
-      border-right: none !important;
-    }
-    .box-card {
-      width: 90%;
-    }
-    .submit {
-      padding-left: 0 !important;
-      justify-content: center !important;
-    }
-  }
-  .master {
-      width: 60%;
-      border-right: 1px solid #E5E5E5;
-      padding: 20px 0;
-  }
-  .submit {
-    width: 100%;
+
+  /* 个人信息头部 */
+  .profile-header {
     display: flex;
-    justify-content: flex-start;
-    gap: 15px;
-    margin-top: 20px;
-    padding-left: 140px;
+    align-items: center;
+    gap: 24px;
+    padding: 8px 0 24px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #ebeef5;
   }
-  .save-btn {
-    background-color: #409EFF;
-    color: white;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 4px;
-    transition: all 0.3s;
+
+  .avatar-wrap {
+    flex-shrink: 0;
   }
-  .save-btn:hover {
-    background-color: #66b1ff;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(64, 158, 255, 0.3);
+
+  .avatar-img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   }
-  .logout-btn {
-    background-color: #F56C6C;
-    color: white;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 4px;
-    transition: all 0.3s;
+
+  .profile-meta {
+    flex: 1;
+    min-width: 0;
   }
-  .logout-btn:hover {
-    background-color: #f78989;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(245, 108, 108, 0.3);
+
+  .profile-name {
+    margin: 0 0 6px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #303133;
   }
-  .slave {
-      width: 40%;
-      padding: 20px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+
+  .profile-account,
+  .profile-pwd-time {
+    margin: 0 0 4px;
+    font-size: 13px;
+    color: #909399;
   }
-  .img {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 20px;
+
+  .profile-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
   }
-  .img .el-image {
-    border: 4px solid #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  /* 表单网格 */
+  .profile-form {
+    padding-top: 8px;
   }
-  .btns {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 32px;
   }
-  
-  /* 景点类型样式 */
+
+  .form-item--full {
+    grid-column: 1 / -1;
+  }
+
   .scenic-type-group {
     display: flex;
     flex-wrap: wrap;
-  }
-  .scenic-type-item {
-    margin-right: 15px;
-    margin-bottom: 10px;
+    gap: 8px 20px;
   }
 
-  /* 财务报表样式 */
-  .financial-card {
-    margin-top: 30px;
+  .scenic-type-group >>> .el-checkbox {
+    margin-right: 0;
   }
-  .financial-content {
-    padding: 10px;
-  }
-  .stat-summary {
+
+  .form-actions {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 30px;
-    background: #f8f9fb;
-    padding: 20px;
-    border-radius: 8px;
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 20px;
+    border-top: 1px solid #ebeef5;
   }
+
+  /* 财务报表 */
+  .financial-content {
+    padding: 4px 0;
+  }
+
+  .stat-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
   .stat-item {
     text-align: center;
+    background: #f8f9fb;
+    padding: 20px 16px;
+    border-radius: 10px;
   }
+
   .stat-label {
-    font-size: 14px;
+    font-size: 13px;
     color: #909399;
     margin-bottom: 8px;
   }
+
   .stat-value {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 600;
     color: #303133;
   }
+
   .stat-value.score {
     color: #67C23A;
   }
+
   .charts-container {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
   }
+
   .chart-box {
-    width: 48%;
-    height: 350px;
+    height: 320px;
+    background: #fafbfc;
+    border-radius: 10px;
+    padding: 8px;
+    box-sizing: border-box;
   }
-  @media screen and (max-width: 992px) {
-    .charts-container {
+
+  @media screen and (max-width: 768px) {
+    .profile-header {
       flex-direction: column;
+      text-align: center;
     }
+
+    .profile-btns {
+      justify-content: center;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .stat-summary {
+      grid-template-columns: 1fr;
+    }
+
+    .charts-container {
+      grid-template-columns: 1fr;
+    }
+
     .chart-box {
-      width: 100%;
+      height: 280px;
     }
   }
 </style>

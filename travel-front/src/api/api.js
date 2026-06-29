@@ -124,5 +124,13 @@ export const getSysTravelShareById = (params) => get("/share/getSysTravelShareBy
 export const saveSysTravelShare = (params) => post("/share/saveSysTravelShare", params)
 export const editSysTravelShare = (params) => post("/share/editSysTravelShare", params)
 export const removeSysTravelShare = (params) => get("/share/removeSysTravelShare", params)
-export const likeShare = (params) => get("/share/likeShare", params)
+export const likeShare = (params) => request.post("/share/likeShare", null, { params })
 export const getMySharePage = (params) => post("/share/getMySharePage", params)
+
+// AI 智能规划（讯飞接口较慢，单独延长超时）
+export const aiChat = (params) => post("/ai/chat", params, { timeout: 120000 })
+export const generateAiPlan = (params) => post("/ai/plan/generate", params, { timeout: 180000 })
+export const getMyPlanPage = (params) => post("/ai/plan/getMyPlanPage", params)
+export const getPlanById = (params) => get("/ai/plan/getById", params)
+export const removePlan = (params) => get("/ai/plan/remove", params)
+export const sharePlanToTravelShare = (params) => post("/ai/plan/share", null, { params })

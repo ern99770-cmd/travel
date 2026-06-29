@@ -1,7 +1,7 @@
 <template>
+  <PageLayout>
   <div class="forumInfo">
-    <headers></headers>
-    <div class="forum-detail-container">
+    <div class="forum-detail-container page-container page-container--narrow">
       <!-- 左侧：文章正文 -->
       <div class="forum-detail-main">
         <div class="article-header">
@@ -56,14 +56,12 @@
         </div>
       </div>
     </div>
-    <bottoms></bottoms>
   </div>
+  </PageLayout>
 </template>
 
 <script>
   import {getSysForumById} from '../../api/api'
-  import headers from '@/components/header'
-  import bottoms from '@/components/bottom'
   export default {
     data() {
       return{
@@ -71,10 +69,7 @@
         info: {},
       }
     },
-    components: {
-      headers,
-      bottoms
-    },
+    components: {},
     methods: {
       getSysForumById() {
         getSysForumById({id: this.id}).then(res => {

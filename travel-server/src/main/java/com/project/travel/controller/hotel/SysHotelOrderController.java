@@ -2,6 +2,7 @@ package com.project.travel.controller.hotel;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.project.travel.constant.PointsConstants;
 import com.project.travel.domain.Result;
 import com.project.travel.domain.SysHotel;
 import com.project.travel.domain.SysHotelItem;
@@ -11,7 +12,8 @@ import com.project.travel.service.SysHotelItemService;
 import com.project.travel.service.SysHotelOrderService;
 import com.project.travel.service.SysHotelService;
 import com.project.travel.utils.TokenUtils;
-import lombok.extern.java.Log;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -118,13 +120,22 @@ public class SysHotelOrderController {
         sysHotelOrder.setUserId(userId);
         boolean save = sysHotelOrderService.save(sysHotelOrder);
         if (save) {
-            // 计算订单金额并添加积分
             float price = item.getPrice() != null ? item.getPrice() : 0;
             int orderAmount = Math.round(price * (sysHotelOrder.getNum() != null ? sysHotelOrder.getNum() : 1));
+            int consumePoints = 0;
             if (orderAmount > 0) {
-                sysMemberService.addPointsFromOrder(userId, orderAmount);
+                consumePoints = sysMemberService.addPointsFromOrder(userId, orderAmount);
             }
-            return Result.success(sysHotelOrder);
+            int behaviorPoints = sysMemberService.awardPointsOnce(
+                    userId,
+                    PointsConstants.BOOK_HOTEL,
+                    PointsConstants.TYPE_INTERACTION,
+                    PointsConstants.DESC_BOOK_HOTEL,
+                    sysHotelOrder.getId());
+            Map<String, Object> data = new HashMap<>();
+            data.put("order", sysHotelOrder);
+            data.put("pointsEarned", behaviorPoints + consumePoints);
+            return Result.success(data);
         } else {
             return Result.fail(ResultCode.COMMON_DATA_OPTION_ERROR.getMessage());
         }

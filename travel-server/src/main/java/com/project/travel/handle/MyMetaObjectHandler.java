@@ -26,42 +26,36 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         log.info("公共字段自动填充[insert]...");
-        String id = null;
-        User user = null;
-        try {
-            id = TokenUtils.getUserIdByToken();
-            if (id != null) {
-                user = userService.getById(id);
-            }
-        } catch (Exception e) {
-            log.warn("获取用户信息失败，不设置创建者信息", e);
-        }
-        metaObject.setValue("createTime", new Date());
-        metaObject.setValue("updateTime", new Date());
+        User user = resolveCurrentUser();
+        Date now = new Date();
+        this.strictInsertFill(metaObject, "createTime", Date.class, now);
+        this.strictInsertFill(metaObject, "updateTime", Date.class, now);
         if (user != null) {
-            metaObject.setValue("createBy", user.getUserName());
-            metaObject.setValue("updateBy", user.getUserName());
+            this.strictInsertFill(metaObject, "createBy", String.class, user.getUserName());
+            this.strictInsertFill(metaObject, "updateBy", String.class, user.getUserName());
         }
     }
-
 
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("公共字段自动填充[update]...");
-        String id = null;
-        User user = null;
+        User user = resolveCurrentUser();
+        this.strictUpdateFill(metaObject, "updateTime", Date.class, new Date());
+        if (user != null) {
+            this.strictUpdateFill(metaObject, "updateBy", String.class, user.getUserName());
+        }
+    }
+
+    private User resolveCurrentUser() {
         try {
-            id = TokenUtils.getUserIdByToken();
+            String id = TokenUtils.getUserIdByToken();
             if (id != null) {
-                user = userService.getById(id);
+                return userService.getById(id);
             }
         } catch (Exception e) {
-            log.warn("获取用户信息失败，不设置更新者信息", e);
+            log.warn("获取用户信息失败，不设置创建者信息", e);
         }
-        metaObject.setValue("updateTime", new Date());
-        if (user != null) {
-            metaObject.setValue("updateBy", user.getUserName());
-        }
+        return null;
     }
 
 }

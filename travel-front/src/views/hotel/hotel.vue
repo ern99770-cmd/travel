@@ -1,13 +1,13 @@
 <template>
+  <PageLayout>
   <div class="hotel">
-    <headers></headers>
-    <div class="hotel-container">
+    <div class="hotel-container page-container">
       <!-- 左侧：酒店销量排名 -->
       <div class="sales-sidebar">
         <div class="sidebar-title">
           <i class="el-icon-medal"></i> 
           热门酒店排行
-          <span v-if="search.attractions" class="location-tag">{{ search.attractions }}</span>
+          <span v-if="currentFilterLocation" class="location-tag">{{ currentFilterLocation }}</span>
         </div>
         <div class="ranking-list">
           <div v-for="(item, index) in hotHotels" :key="index" class="ranking-item" @click="toInfo(item.id)">
@@ -26,29 +26,60 @@
 
       <!-- 右侧：主要内容 -->
       <div class="hotel-main">
-        <div class="attractions2">
-          <el-select size="small" style="margin-left:20px" v-model="search.attractions" placeholder="请选择景点">
-              <el-option v-for="(item,index) in attractions" :key="index"
-              :label="item.name"
-              :value="item.name">
-              </el-option>
-          </el-select>
-          <el-input size="small" style="width:300px;margin-left:20px" v-model="search.name" placeholder="请输入酒店名称"></el-input>
-          <el-button size="small" style="margin-left:20px" type="primary" plain @click="searchPage">搜索</el-button>
-          <el-button size="small" style="margin-left:10px" type="warning" plain @click="resetSearch">重置</el-button>
+        <SearchPanel title="酒店筛选" icon="el-icon-office-building" @search="searchPage" @reset="resetSearch">
+          <el-input
+            v-model="search.destination"
+            prefix-icon="el-icon-location-outline"
+            placeholder="所在地区，如：北京"
+            clearable
+            class="search-field">
+          </el-input>
+          <el-autocomplete
+            v-model="search.attractions"
+            :fetch-suggestions="queryAttractions"
+            placeholder="关联景点（可选择或输入）"
+            prefix-icon="el-icon-location-outline"
+            clearable
+            :trigger-on-focus="true"
+            class="search-field"
+            @select="searchPage"
+            @keyup.enter.native="searchPage">
+          </el-autocomplete>
+          <el-input
+            v-model="search.name"
+            prefix-icon="el-icon-search"
+            placeholder="酒店名称"
+            clearable
+            class="search-field"
+            @keyup.enter.native="searchPage">
+          </el-input>
+        </SearchPanel>
+
+        <div v-if="currentFilterLocation" class="filter-hint">
+          <i class="el-icon-location-information"></i>
+          <span>当前筛选地区：<strong>{{ currentFilterLocation }}</strong></span>
+          <el-tag v-if="fromPlanBooking" size="mini" type="success" effect="plain">来自 AI 行程</el-tag>
         </div>
 
         <div class="attractions3">
-          <div class="index5" v-for="(item,index) in tableData" :key="index" style="margin-top:15px">
-            <img style="width:100%;height:300px" :src="item.images.split(',')[0]">
-            <div class="index6">
-              <div class="index7">{{item.name}}</div>
-              <div class="index8">{{item.introduce}}</div>
-              <div class="index9" style="margin-bottom:10px" @click="toInfo(item.id)">
-                预 定
+          <el-empty
+            v-if="tableData.length === 0"
+            :description="emptyDescription"
+            :image-size="100">
+            <el-button v-if="currentFilterLocation" size="small" @click="resetSearch">清除地区筛选</el-button>
+          </el-empty>
+          <template v-else>
+            <div class="index5" v-for="(item,index) in tableData" :key="index" style="margin-top:15px">
+              <img style="width:100%;height:300px" :src="item.images.split(',')[0]">
+              <div class="index6">
+                <div class="index7">{{item.name}}</div>
+                <div class="index8">{{item.introduce}}</div>
+                <div class="index9" style="margin-bottom:10px" @click="toInfo(item.id)">
+                  预 定
+                </div>
               </div>
             </div>
-          </div>
+          </template>
         </div>
 
         <el-pagination
@@ -60,14 +91,12 @@
         </el-pagination>
       </div>
     </div>
-    <bottoms></bottoms>
   </div>
+  </PageLayout>
 </template>
 
 <script>
   import {getSysHotelPage,getSysAttractionsList} from '../../api/api'
-  import headers from '@/components/header'
-  import bottoms from '@/components/bottom'
   export default {
     data() {
       return{
@@ -75,6 +104,7 @@
           name: "",
           state: "1",
           attractions: "",
+          destination: "",
           pageSize: 9,
           pageNumber: 1,
         },
@@ -84,9 +114,26 @@
         hotHotels: []
       }
     },
-    components: {
-      headers,
-      bottoms
+    components: {},
+    computed: {
+      currentFilterLocation() {
+        if (this.search.destination && this.search.destination.trim()) {
+          return this.search.destination.trim()
+        }
+        if (this.search.attractions && this.search.attractions.trim()) {
+          return this.search.attractions.trim()
+        }
+        return ''
+      },
+      fromPlanBooking() {
+        return this.$route.query.fromPlan === '1'
+      },
+      emptyDescription() {
+        if (this.currentFilterLocation) {
+          return `暂无「${this.currentFilterLocation}」相关酒店`
+        }
+        return '暂无酒店数据'
+      }
     },
     methods: {
       getSysAttractionsList() {
@@ -96,9 +143,17 @@
           }
         })
       },
+      queryAttractions(queryString, cb) {
+        const keyword = (queryString || '').trim().toLowerCase()
+        const list = keyword
+          ? this.attractions.filter(item => item.name.toLowerCase().includes(keyword))
+          : this.attractions
+        cb(list.map(item => ({ value: item.name })))
+      },
       searchPage() {
         this.search.pageNumber = 1
         this.getSysHotelPage()
+        this.getHotelSalesRanking()
       },
       getSysHotelPage() {
         getSysHotelPage(this.search).then(res => {
@@ -116,9 +171,11 @@
       getHotelSalesRanking() {
         // 1. 获取酒店（根据选择的景点筛选）
         const hotelSearchParams = { pageSize: 100, pageNumber: 1, state: "1" }
-        // 如果选择了景点，就添加筛选条件
         if (this.search.attractions) {
           hotelSearchParams.attractions = this.search.attractions
+        }
+        if (this.search.destination) {
+          hotelSearchParams.destination = this.search.destination
         }
         
         getSysHotelPage(hotelSearchParams).then(res => {
@@ -151,11 +208,27 @@
           }
         })
       },
+      applyRouteQuery() {
+        const { destination, fromPlan } = this.$route.query
+        if (destination) {
+          this.search.destination = destination
+          if (fromPlan === '1') {
+            this.$nextTick(() => {
+              this.$message.success(`已按行程目的地「${destination}」筛选酒店`)
+            })
+          }
+        }
+      },
       resetSearch() {
         this.search.name = ''
         this.search.attractions = ''
+        this.search.destination = ''
         this.search.pageNumber = 1
+        if (this.$route.query.destination || this.$route.query.fromPlan) {
+          this.$router.replace({ path: '/hotel' })
+        }
         this.getSysHotelPage()
+        this.getHotelSalesRanking()
       },
       toInfo(id) {
         this.$router.push("/hotelInfo?id=" + id)
@@ -167,7 +240,16 @@
     },
     mounted() {
       this.getSysAttractionsList()
+      this.applyRouteQuery()
       this.getSysHotelPage()
+    },
+    watch: {
+      '$route.query.destination'(val) {
+        this.search.destination = val || ''
+        this.search.pageNumber = 1
+        this.getSysHotelPage()
+        this.getHotelSalesRanking()
+      }
     }
  }
 </script>
@@ -176,11 +258,8 @@
    @import url('../../assets/css/hotel.css');
 
    .hotel-container {
-     max-width: 1400px;
-     margin: 80px auto 40px;
      display: flex;
      gap: 30px;
-     padding: 0 20px;
    }
 
    /* 左侧排名侧边栏 */
@@ -192,7 +271,7 @@
      padding: 20px;
      height: fit-content;
      position: sticky;
-     top: 100px;
+     top: var(--page-sticky-top, 104px);
    }
 
    .sidebar-title {

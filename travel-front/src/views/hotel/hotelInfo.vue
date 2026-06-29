@@ -1,6 +1,6 @@
 <template>
+  <PageLayout>
   <div class="attractionsInfo">
-    <headers></headers>
     <div class="attractionsInfo1">
         <div class="attractionsInfo2">
             <div class="attractionsInfo3">
@@ -15,37 +15,81 @@
                 <div class="" style="margin-top: 10px;margin-left: 20px;">所属景区：{{info.attractions || ''}}</div>
                 <div class="" style="margin-top: 10px;margin-left: 20px;">地址：{{info.address || ''}}</div>
                 <div class="attractionsInfo6">{{info.introduce || ''}}</div>
-                <div class="attractionsInfo7" style="margin-left:10px">
-                    <el-button size="small" type="primary" plain @click="toOrder">立即预定</el-button>
+                <div class="attractionsInfo7">
+                    <el-button type="primary" icon="el-icon-s-order" @click="toOrder">立即预定</el-button>
                 </div>
             </div>
         </div>
     </div>
     <el-dialog
-    title="预定"
-    :visible.sync="dialogVisible"
-    width="40%">
-    <span>
-        <div>
-            <el-radio style="margin-top:10px" v-for="(item,index) in hotel" :key="index" size="small" v-model="radio1" :label="item.id" border>{{item.name}} - 数量{{item.num}} - 价格{{item.price}}</el-radio>
+      title="预定"
+      :visible.sync="dialogVisible"
+      width="520px"
+      custom-class="hotel-book-dialog"
+      :close-on-click-modal="false">
+      <div class="book-form">
+        <div class="book-section">
+          <div class="book-section__title">选择房型</div>
+          <div v-if="hotel.length" class="room-list">
+            <div
+              v-for="(item, index) in hotel"
+              :key="index"
+              class="room-card"
+              :class="{ active: radio1 === item.id }"
+              @click="radio1 = item.id">
+              <div class="room-card__main">
+                <span class="room-card__radio" :class="{ checked: radio1 === item.id }"></span>
+                <span class="room-card__name">{{ item.name }}</span>
+              </div>
+              <div class="room-card__meta">
+                <span>库存 {{ item.num }} 间</span>
+                <span class="room-card__price">¥{{ item.price }}/晚</span>
+              </div>
+            </div>
+          </div>
+          <div v-else class="book-empty">暂无可预订房型</div>
         </div>
-        <el-input-number style="margin-top:10px" size="small" v-model="num" :min="1" :max="10"></el-input-number>
-        <el-date-picker size="small" style="margin-left:20px;margin-top:10px"
-        v-model="date1"
-        type="date"
-        value-format="yyyy-MM-dd"
-        placeholder="选择预定日期">
-        </el-date-picker>
-        <div class="attractionsInfo9">
-            <el-input size="small" v-model="people.name" placeholder="请输入姓名"></el-input>
-            <el-input size="small" style="margin-left:10px" v-model="people.tel" placeholder="请输入电话"></el-input>
-            <el-input size="small" style="margin-left:10px" v-model="people.idCard" placeholder="请输入身份证号"></el-input>
+
+        <div class="book-section">
+          <div class="book-section__title">预订信息</div>
+          <div class="book-row">
+            <div class="book-field">
+              <label>房间数量</label>
+              <el-input-number
+                v-model="num"
+                :min="1"
+                :max="maxBookNum"
+                size="small"
+                controls-position="right">
+              </el-input-number>
+            </div>
+            <div class="book-field book-field--grow">
+              <label>入住日期</label>
+              <el-date-picker
+                v-model="date1"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="选择预定日期"
+                size="small"
+                style="width: 100%">
+              </el-date-picker>
+            </div>
+          </div>
         </div>
-    </span>
-    <span slot="footer" class="dialog-footer">
-        <el-button @click="closeOrder" size="small">取 消</el-button>
-        <el-button type="primary" @click="saveOrder"  size="small">确 定</el-button>
-    </span>
+
+        <div class="book-section">
+          <div class="book-section__title">入住人信息</div>
+          <div class="guest-fields">
+            <el-input v-model="people.name" size="small" prefix-icon="el-icon-user" placeholder="请输入姓名"></el-input>
+            <el-input v-model="people.tel" size="small" prefix-icon="el-icon-phone" placeholder="请输入电话"></el-input>
+            <el-input v-model="people.idCard" size="small" prefix-icon="el-icon-postcard" placeholder="请输入身份证号"></el-input>
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="closeOrder">取 消</el-button>
+        <el-button type="primary" @click="saveOrder">确 定</el-button>
+      </span>
     </el-dialog>
 
     <!-- 支付弹窗 -->
@@ -107,15 +151,13 @@
         <el-button type="primary" @click="confirmPayment">确认支付</el-button>
       </span>
     </el-dialog>
-
-    <bottoms></bottoms>
   </div>
+  </PageLayout>
 </template>
 
 <script>
   import {getSysHotelById,getSysHotelItemList,saveSysHotelOrder,getMyCoupons,useCoupon} from '../../api/api'
-  import headers from '@/components/header'
-  import bottoms from '@/components/bottom'
+  import { showPointsEarned, extractPointsEarned, extractOrderFromRes } from '@/utils/pointsToast'
   export default {
     data() {
       return{
@@ -141,15 +183,28 @@
         finalAmount: 0
       }
     },
-    components: {
-      headers,
-      bottoms
+    components: {},
+    computed: {
+      maxBookNum() {
+        const selected = this.hotel.find(item => item.id === this.radio1)
+        return selected ? Math.min(selected.num, 10) : 10
+      }
+    },
+    watch: {
+      radio1() {
+        if (this.num > this.maxBookNum) {
+          this.num = this.maxBookNum || 1
+        }
+      }
     },
     methods: {
       getSysHotelItemList() {
         getSysHotelItemList({id:this.id}).then(res => {
           if (res.code == 1000) {
             this.hotel = res.data
+            if (this.hotel.length && !this.radio1) {
+              this.radio1 = this.hotel[0].id
+            }
           }
         })
       },
@@ -210,7 +265,9 @@
           }
           saveSysHotelOrder(param).then(res => {
               if (res.code == 1000) {
-                this.currentOrderId = res.data?.id || res.data
+                showPointsEarned(extractPointsEarned(res), '预约酒店奖励')
+                const order = extractOrderFromRes(res)
+                this.currentOrderId = order?.id || res.data?.id
                 const selectedItem = this.hotel.find(item => item.id === this.radio1)
                 this.orderAmount = (selectedItem?.price || 0) * this.num
                 this.closeOrder()
@@ -243,6 +300,13 @@
         })
       },
       toOrder() {
+        if (!this.hotel.length) {
+          this.$message.warning('暂无可预订房型')
+          return
+        }
+        if (!this.radio1) {
+          this.radio1 = this.hotel[0].id
+        }
         this.dialogVisible = true
       },
       openPaymentDialog() {
@@ -326,6 +390,129 @@
 
 <style scoped>
    @import url('../../assets/css/attractionsInfo.css');
+
+.book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.book-section__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #303133;
+  margin-bottom: 12px;
+}
+
+.room-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.room-card {
+  border: 1px solid #dcdfe6;
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.room-card:hover {
+  border-color: #409eff;
+}
+
+.room-card.active {
+  border-color: #409eff;
+  background: #ecf5ff;
+}
+
+.room-card__main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.room-card__radio {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #dcdfe6;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.room-card__radio.checked {
+  border-color: #409eff;
+}
+
+.room-card__radio.checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: #409eff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.room-card__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.room-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 26px;
+  font-size: 13px;
+  color: #909399;
+}
+
+.room-card__price {
+  color: #f56c6c;
+  font-weight: 600;
+}
+
+.book-empty {
+  text-align: center;
+  color: #909399;
+  padding: 24px;
+  background: #f5f7fa;
+  border-radius: 8px;
+}
+
+.book-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.book-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.book-field label {
+  font-size: 13px;
+  color: #606266;
+}
+
+.book-field--grow {
+  flex: 1;
+}
+
+.guest-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
 .payment-content {
     padding: 10px 0;

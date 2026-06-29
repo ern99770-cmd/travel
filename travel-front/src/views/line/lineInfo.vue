@@ -1,6 +1,6 @@
 <template>
+  <PageLayout>
   <div class="forumInfo">
-    <headers></headers>
     <div class="forumInfo1" v-if="info && info.images">
         <div class="forumInfo2">
           <el-carousel height="500px">
@@ -22,14 +22,13 @@
             </div>
         </div>
     </div>
-    <bottoms></bottoms>
   </div>
+  </PageLayout>
 </template>
 
 <script>
   import {getSysLineById,getSysFavor,saveSysFavor,removeSysFavor,addLineHits} from '../../api/api'
-  import headers from '@/components/header'
-  import bottoms from '@/components/bottom'
+  import { showPointsEarned, extractPointsEarned } from '@/utils/pointsToast'
   export default {
     data() {
       return{
@@ -43,10 +42,7 @@
         flag: false,
       }
     },
-    components: {
-      headers,
-      bottoms
-    },
+    components: {},
     methods: {
       removeSysFavor(id) {
         removeSysFavor({ids: this.favor.id}).then(res => {
@@ -61,6 +57,7 @@
         }
         saveSysFavor(param).then(res => {
           if (res.code == 1000) {
+            showPointsEarned(extractPointsEarned(res), '收藏线路奖励')
             this.$message({
                 message: '收藏成功',
                 type: 'success'

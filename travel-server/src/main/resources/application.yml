@@ -16,6 +16,9 @@ server:
 spring:
   application:
     name: 程序入口
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
   # 服务模块
   devtools:
     restart:
@@ -33,9 +36,9 @@ spring:
     api-key: sk-4b962a59abda4ee6a0bc6f7dd37b7416
   xunfei:
     client:
-      appid: your_appid
-      api-key: your_api_key
-      api-secret: your_api_secret
+      appid: 3864d35b
+      api-key: 731b9435630e1972458285c2a28076c7
+      api-secret: ZDI1NjRlNDMyYzk4MTg3NzZlZTFlMTYw
 # myBatis-plus配置
 mybatis-plus:
   global-config:

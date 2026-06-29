@@ -1,6 +1,6 @@
 <template>
+    <PageLayout>
     <div class="attractionsInfo">
-        <headers></headers>
         <div class="attractionsInfo1">
             <div class="attractionsInfo2">
                 <div class="attractionsInfo3">
@@ -15,8 +15,8 @@
                     <div class="attractionsInfo5">价格：{{ info.price || 0 }}（元）</div>
                     <div style="margin-left:20px;margin-top:10px">库存：{{ info.num || 0 }} -{{ info.realName == 0 ? '非实名' : '实名' }}</div>
                     <div class="attractionsInfo6">{{ info.introduce || '' }}</div>
-                    <div class="attractionsInfo7" style="margin-left:15px">
-                        <el-button size="small" type="primary" plain @click="toOrder">立即预约</el-button>
+                    <div class="attractionsInfo7">
+                        <el-button type="primary" icon="el-icon-tickets" @click="toOrder">立即预约</el-button>
                     </div>
                 </div>
             </div>
@@ -57,26 +57,75 @@
                 </el-pagination>
             </div>
         </div>
-        <el-dialog title="预约" :visible.sync="dialogVisible" width="40%">
-            <span>
-                <el-input-number size="small" v-model="num" :min="1" :max="10"></el-input-number>
-                <el-date-picker size="small" style="margin-left:20px" v-model="date1" type="date"
-                value-format="yyyy-MM-dd" placeholder="选择预约日期">
-                </el-date-picker>
-                <div class="attractionsInfo9" v-for="(item, index) in people">
-                    <el-input size="small" v-model="item.name" placeholder="请输入姓名"></el-input>
-                    <el-input size="small" style="margin-left:10px" v-model="item.tel" placeholder="请输入电话"></el-input>
-                    <el-input size="small" v-if="info.realName == 1" style="margin-left:10px" v-model="item.idCard"
-                        placeholder="请输入身份证号"></el-input>
-                    <div v-if="index == (people.length - 1)" @click="addKeyword" style="margin-left:10px"><i
-                            class="el-icon-circle-plus-outline"></i></div>
-                    <div @click="minusKeyword(index)" style="margin-left:10px" v-if="index != 0"><i
-                            class="el-icon-remove-outline"></i></div>
+        <el-dialog
+            title="预约"
+            :visible.sync="dialogVisible"
+            width="520px"
+            custom-class="attraction-book-dialog"
+            :close-on-click-modal="false">
+            <div class="book-form">
+                <div class="book-section">
+                    <div class="book-section__title">景点信息</div>
+                    <div class="attraction-summary">
+                        <div class="attraction-summary__name">{{ info.name || '' }}</div>
+                        <div class="attraction-summary__meta">
+                            <span class="attraction-summary__price">¥{{ info.price || 0 }}/人</span>
+                            <span>库存 {{ info.num || 0 }} 张</span>
+                            <span>{{ info.realName == 1 ? '实名预约' : '非实名' }}</span>
+                        </div>
+                    </div>
                 </div>
-            </span>
+
+                <div class="book-section">
+                    <div class="book-section__title">预约信息</div>
+                    <div class="book-row">
+                        <div class="book-field">
+                            <label>预约人数</label>
+                            <el-input-number
+                                v-model="num"
+                                :min="1"
+                                :max="maxBookNum"
+                                size="small"
+                                controls-position="right">
+                            </el-input-number>
+                        </div>
+                        <div class="book-field book-field--grow">
+                            <label>入园日期</label>
+                            <el-date-picker
+                                v-model="date1"
+                                type="date"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择预约日期"
+                                size="small"
+                                style="width: 100%">
+                            </el-date-picker>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="book-section">
+                    <div class="book-section__title">预约人信息</div>
+                    <div class="guest-list">
+                        <div v-for="(item, index) in people" :key="index" class="guest-card">
+                            <div class="guest-card__title">预约人 {{ index + 1 }}</div>
+                            <div class="guest-fields">
+                                <el-input v-model="item.name" size="small" prefix-icon="el-icon-user" placeholder="请输入姓名"></el-input>
+                                <el-input v-model="item.tel" size="small" prefix-icon="el-icon-phone" placeholder="请输入电话"></el-input>
+                                <el-input
+                                    v-if="info.realName == 1"
+                                    v-model="item.idCard"
+                                    size="small"
+                                    prefix-icon="el-icon-postcard"
+                                    placeholder="请输入身份证号">
+                                </el-input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="closeOrder" size="small">取 消</el-button>
-                <el-button type="primary" @click="saveOrder" size="small">确 定</el-button>
+                <el-button @click="closeOrder">取 消</el-button>
+                <el-button type="primary" @click="saveOrder">确 定</el-button>
             </span>
         </el-dialog>
 
@@ -162,14 +211,13 @@
                 </div>
             </div>
         </div>
-        <bottoms></bottoms>
     </div>
+    </PageLayout>
 </template>
 
 <script>
 import { getSysAttractionsById, saveSysAttractionOrder, getSysCommentsPage, saveSysComments, getSysHotelPage, getMyCoupons, useCoupon } from '../../api/api'
-import headers from '@/components/header'
-import bottoms from '@/components/bottom'
+import { showPointsEarned, extractPointsEarned, extractOrderFromRes } from '@/utils/pointsToast'
 export default {
     data() {
         return {
@@ -204,9 +252,21 @@ export default {
         finalAmount: 0
         }
     },
-    components: {
-        headers,
-        bottoms
+    components: {},
+    computed: {
+        maxBookNum() {
+            return Math.min(this.info.num || 10, 10)
+        }
+    },
+    watch: {
+        num(newVal) {
+            while (this.people.length < newVal) {
+                this.people.push({ name: '', tel: '', idCard: '' })
+            }
+            while (this.people.length > newVal) {
+                this.people.pop()
+            }
+        }
     },
     methods: {
         getNearbyHotels() {
@@ -236,6 +296,7 @@ export default {
             }
             saveSysComments(param).then(res => {
                 if (res.code == 1000) {
+                    showPointsEarned(extractPointsEarned(res), '评论奖励')
                     this.$message({
                         message: '评论成功',
                         type: 'success'
@@ -320,8 +381,9 @@ export default {
             }
             saveSysAttractionOrder(param).then(res => {
                 if (res.code == 1000) {
-                    // 预约成功，保存订单ID，打开支付弹窗
-                    this.currentOrderId = res.data?.id || res.data
+                    showPointsEarned(extractPointsEarned(res), '预约景点奖励')
+                    const order = extractOrderFromRes(res)
+                    this.currentOrderId = order?.id || res.data?.id
                     this.orderAmount = (this.info?.price || 0) * this.num
                     this.closeOrder()
                     this.openPaymentDialog()
@@ -355,18 +417,11 @@ export default {
             })
         },
         toOrder() {
-            this.dialogVisible = true
-        },
-        addKeyword() {
-            var param = {
-                name: "",
-                tel: "",
-                idCard: ""
+            if (!this.info.num || this.info.num <= 0) {
+                this.$message.warning('暂无库存')
+                return
             }
-            this.people.push(param)
-        },
-        minusKeyword(index) {
-            this.people.splice(index, 1)
+            this.dialogVisible = true
         },
         handleCurrentChange() {
 
@@ -461,6 +516,95 @@ export default {
 
 <style scoped>
 @import url('../../assets/css/attractionsInfo.css');
+
+.book-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.book-section__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #303133;
+    margin-bottom: 12px;
+}
+
+.attraction-summary {
+    border: 1px solid #dcdfe6;
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: #f5f7fa;
+}
+
+.attraction-summary__name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #303133;
+    margin-bottom: 8px;
+}
+
+.attraction-summary__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+    color: #909399;
+}
+
+.attraction-summary__price {
+    color: #f56c6c;
+    font-weight: 600;
+}
+
+.book-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.book-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.book-field label {
+    font-size: 13px;
+    color: #606266;
+}
+
+.book-field--grow {
+    flex: 1;
+}
+
+.guest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.guest-card {
+    border: 1px solid #ebeef5;
+    border-radius: 8px;
+    padding: 12px 14px;
+    background: #fafafa;
+}
+
+.guest-card__title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #606266;
+    margin-bottom: 10px;
+}
+
+.guest-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
 .payment-content {
     padding: 10px 0;

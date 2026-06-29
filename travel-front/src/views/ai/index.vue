@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <Header />
+    <PageLayout full-height :show-footer="false">
         <div class="ai-chat">
             <div class="travel-decoration airplane">✈️</div>
             <div class="travel-decoration compass">🧭</div>
@@ -8,16 +7,39 @@
             <div class="travel-decoration camera">📷</div>
             <div class="chat-container">
                 <div class="action-bar">
-                    <button class="clear-button" @click="clearChat">
-                        <i class="el-icon-delete"></i>
-                        清除对话
-                    </button>
-                    <button class="travel-request-button" @click="toggleTravelForm">
-                        <i class="el-icon-place"></i>
-                        财经顾问
-                    </button>
+                    <div class="action-bar-left">
+                        <img :src="aiImg" alt="AI" class="action-bar-logo">
+                        <div class="action-bar-title">
+                            <h3>AI 旅游规划师</h3>
+                            <p>智能问答 · 行程规划 · 景点推荐</p>
+                        </div>
+                    </div>
+                    <div class="action-bar-right">
+                        <button class="clear-button" @click="clearChat">
+                            <i class="el-icon-delete"></i>
+                            清除对话
+                        </button>
+                        <button class="travel-request-button" @click="toggleTravelForm">
+                            <i class="el-icon-place"></i>
+                            智能行程规划
+                        </button>
+                        <button class="travel-request-button secondary" @click="$router.push('/myPlan')">
+                            <i class="el-icon-notebook-2"></i>
+                            我的行程
+                        </button>
+                    </div>
                 </div>
                 <div class="message-container" id='message-box'>
+                    <div v-if="!messageList.length" class="empty-chat">
+                        <img :src="aiImg" alt="AI" class="empty-chat-icon">
+                        <h4>你好，我是 AI 旅游规划师</h4>
+                        <p>你可以直接提问，例如：</p>
+                        <div class="quick-questions">
+                            <span @click="askQuick('成都有什么必去景点？')">成都有什么必去景点？</span>
+                            <span @click="askQuick('帮我规划一个3天西安旅行')">帮我规划一个3天西安旅行</span>
+                            <span @click="askQuick('夏季适合去哪些避暑目的地？')">夏季适合去哪些避暑目的地？</span>
+                        </div>
+                    </div>
                     <div v-for="(msg,index) in messageList" :key="index" 
                          :class="['message', msg.role === 'user' ? 'message-user' : 'message-assistant']">
                         <div class="message-content">
@@ -25,10 +47,25 @@
                                 <img :src="msg.role === 'user' ? userImg : aiImg" 
                                      :alt="msg.role === 'user' ? '用户' : 'AI'" 
                                      class="avatar-img"/>
-                                <span v-if="msg.role === 'assistant'" class="assistant-name">财经顾问</span>
+                                <span v-if="msg.role === 'assistant'" class="assistant-name">AI旅游规划师</span>
                             </div>
                             <div class="bubble">
-                                <div class="text" v-html="msg.content"></div>
+                                <div v-if="msg.streaming" class="text streaming-text">{{ msg.rawContent || msg.content }}<span class="stream-cursor"></span></div>
+                                <div v-else class="text" v-html="msg.content"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="isWaitingReply" class="message message-assistant">
+                        <div class="message-content">
+                            <div class="avatar">
+                                <img :src="aiImg" alt="AI" class="avatar-img"/>
+                                <span class="assistant-name">AI旅游规划师</span>
+                            </div>
+                            <div class="bubble typing-bubble">
+                                <div class="typing-indicator">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <span class="typing-text">{{ thinkingText }}</span>
                             </div>
                         </div>
                     </div>
@@ -38,23 +75,22 @@
                         <textarea 
                             class="message-input"
                             rows="3"
-                            :placeholder="loading ? 'AI 正在思考中...' : '有关旅游的问题尽管问我吧...'"
+                            :placeholder="inputDisabled ? 'AI 正在回复中，请稍候...' : '有关旅游的问题尽管问我吧...'"
                             v-model="msgValue"
-                            :disabled="loading"
+                            :disabled="inputDisabled"
                             @keydown.enter.prevent="submitMsg"
                         ></textarea>
                         <button 
                             class="send-button" 
-                            :disabled="loading || !msgValue.trim()" 
+                            :disabled="inputDisabled || !msgValue.trim()" 
                             @click="submitMsg">
-                            <i v-if="loading" class="el-icon-loading"></i>
-                            {{ loading ? '发送中' : '发送' }}
+                            <i v-if="chatLoading" class="el-icon-loading"></i>
+                            {{ chatLoading ? '回复中' : '发送' }}
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        <Bottom />
 
         <!-- 将表单放到外部，防止被遮挡 -->
         <template v-if="showTravelForm">
@@ -110,27 +146,23 @@
                 </div>
                 <div class="form-footer">
                     <button class="cancel-button" @click="toggleTravelForm">取消</button>
-                    <button class="submit-form-button" @click="submitTravelForm">获取个性化推荐</button>
+                    <button class="submit-form-button" :disabled="planGenerating" @click="submitTravelForm">
+                        {{ planGenerating ? '生成中...' : '获取个性化推荐' }}
+                    </button>
                 </div>
             </div>
         </template>
-    </div>
+    </PageLayout>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import aiImg from "../../assets/image/Ai.png"
-import TTSRecorder from "@/utils/TTSRecorder"
-import Header from '@/components/header'
-import Bottom from '@/components/bottom'
 import '../../assets/css/ai-chat.css'
-import { getSysAttractionsRecommend } from '@/api/api'
+import { mapState } from 'vuex'
 
 export default {
     name: 'AiChat',
     components: {
-        Header,
-        Bottom
     },
     data() {
         return {
@@ -138,7 +170,6 @@ export default {
             msgDom: null,
             userImg: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
             aiImg: aiImg,
-            ttsRecorder: null,
             showTravelForm: false,
             travelForm: {
                 date: '',
@@ -153,12 +184,34 @@ export default {
                     return time.getTime() < Date.now() - 8.64e7;
                 }
             },
-            loading: false
+            thinkingText: '正在思考',
+            thinkingTimer: null
         }
     },
     computed: {
+        ...mapState('plan', ['loading']),
+        planGenerating() {
+            return this.loading
+        },
+        chatLoading() {
+            return this.$store.state.msg.chatLoading
+        },
         messageList() {
             return this.$store.state.msg.list || []
+        },
+        isWaitingReply() {
+            if (!this.chatLoading) {
+                return false
+            }
+            const list = this.messageList
+            if (!list.length) {
+                return true
+            }
+            const lastMsg = list[list.length - 1]
+            return lastMsg.role === 'user'
+        },
+        inputDisabled() {
+            return this.chatLoading
         },
         userInfo() {
             const info = window.localStorage.getItem("user_info");
@@ -170,8 +223,10 @@ export default {
             this.userImg = this.$store.state.HOST + this.userInfo.avatar;
         }
         this.msgDom = document.getElementById("message-box")
-        this.ttsRecorder = new TTSRecorder()
         this.scroll()
+        if (this.chatLoading) {
+            this.startThinkingAnimation()
+        }
         
         window.copyCode = (button) => {
             const codeBlock = button.closest('.code-block').querySelector('code')
@@ -194,7 +249,26 @@ export default {
             })
         }
     },
+    beforeDestroy() {
+        this.clearThinkingTimer()
+    },
     methods: {
+        clearThinkingTimer() {
+            if (this.thinkingTimer) {
+                clearInterval(this.thinkingTimer)
+                this.thinkingTimer = null
+            }
+        },
+        startThinkingAnimation() {
+            this.clearThinkingTimer()
+            const texts = ['正在思考', '正在检索旅游信息', '正在组织回答']
+            let index = 0
+            this.thinkingText = texts[0]
+            this.thinkingTimer = setInterval(() => {
+                index = (index + 1) % texts.length
+                this.thinkingText = texts[index]
+            }, 1800)
+        },
         toggleTravelForm() {
             this.showTravelForm = !this.showTravelForm;
             if (!this.showTravelForm) {
@@ -219,23 +293,33 @@ export default {
                 }
             })
         },
-        async submitMsg() {
-            if (!this.msgValue.trim() || this.loading) return
-            
-            try {
-                this.loading = true
-                this.$store.dispatch('msg/userAddMsg', this.msgValue)
-                const userMsg = this.msgValue
-                this.msgValue = ""
-                this.scroll()
-                
-                await this.ttsRecorder.start(this.$store, this.msgDom)
-            } catch (error) {
-                console.error('发送消息失败:', error)
-                this.$message.error('发送失败，请重试')
-            } finally {
-                this.loading = false
+        submitMsg() {
+            if (!this.msgValue.trim() || this.inputDisabled) return
+
+            if (!window.localStorage.getItem("user_token")) {
+                this.$message.warning("请先登录后再使用 AI 功能")
+                this.$router.push("/login")
+                return
             }
+
+            const userMsg = this.msgValue.trim()
+            this.startThinkingAnimation()
+            this.$store.dispatch('msg/userAddMsg', userMsg)
+            this.msgValue = ""
+            this.scroll()
+
+            const history = (this.messageList || [])
+                .slice(0, -1)
+                .slice(-8)
+                .map(item => ({
+                    role: item.role,
+                    content: item.rawContent || this.stripHtmlContent(item.content)
+                }))
+
+            this.$store.dispatch('msg/sendAiStream', { question: userMsg, history }).finally(() => {
+                this.clearThinkingTimer()
+                this.scroll()
+            })
         },
         clearChat() {
             this.$confirm('确认清除所有对话记录吗？', '提示', {
@@ -243,7 +327,8 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.$store.commit('msg/CLEAR_MESSAGES')
+                this.$store.dispatch('msg/clearMessages')
+                this.clearThinkingTimer()
                 this.$message({
                     type: 'success',
                     message: '对话已清除'
@@ -256,32 +341,36 @@ export default {
                 })
             })
         },
-        async submitTravelForm() {
-            if (!this.validateForm()) return;
-            
-            this.showTravelForm = false;
-            
-            // 1. 获取系统推荐景点
-            let recommendations = [];
-            try {
-                const res = await getSysAttractionsRecommend({ scenicType: this.travelForm.preferences.join(',') });
-                if (res.code == 1000) {
-                    recommendations = res.data.slice(0, 5); // 取前5个
-                }
-            } catch (error) {
-                console.error('获取推荐景点失败:', error);
+        submitTravelForm() {
+            if (!this.validateForm()) return
+
+            if (!window.localStorage.getItem("user_token")) {
+                this.$message.warning("请先登录后再生成行程")
+                this.$router.push("/login")
+                return
             }
-            
-            // 2. 发送到后端API (记录需求)
-            this.sendTravelRequestToBackend();
-            
-            // 3. 同时发送到AI对话
-            const prompt = this.generateTravelPrompt(recommendations);
-            this.$store.dispatch('msg/userAddMsg', prompt);
-            
-            // 4. 启动语音合成并滚动
-            this.ttsRecorder.start(this.$store, this.msgDom);
-            this.scroll();
+
+            if (this.planGenerating) {
+                this.$message.warning('已有行程正在生成中，请稍候')
+                return
+            }
+
+            const formData = {
+                departureDate: this.formatDate(this.travelForm.date),
+                destination: this.travelForm.destination,
+                days: this.travelForm.days,
+                budget: this.travelForm.budget,
+                preferences: this.travelForm.preferences.join(','),
+                specialNeeds: this.travelForm.specialNeeds || ''
+            }
+
+            this.showTravelForm = false
+            this.resetTravelForm()
+            this.$store.dispatch('plan/generatePlan', formData).catch(() => {})
+        },
+        stripHtmlContent(content) {
+            if (!content) return ''
+            return String(content).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
         },
         validateForm() {
             if (!this.travelForm.date) {
@@ -302,54 +391,20 @@ export default {
             }
             return true;
         },
-        generateTravelPrompt(recommendations = []) {
-            const date = this.formatDate(this.travelForm.date);
-            const preferences = this.travelForm.preferences.join('、');
-            
-            let recommendationText = '';
-            if (recommendations.length > 0) {
-                recommendationText = '\n\n我们的系统中为您找到了以下相关景点，请优先考虑将它们加入行程：\n';
-                recommendations.forEach(item => {
-                    recommendationText += `- ${item.name}: ${item.introduce.substring(0, 50)}...\n`;
-                });
-            }
-
-            return `请根据以下信息为我推荐旅游方案：
-时间：${date}
-目的地：${this.travelForm.destination}
-游玩天数：${this.travelForm.days}天
-预算范围：${this.travelForm.budget}
-偏好类型：${preferences}
-特殊需求：${this.travelForm.specialNeeds || '无'}${recommendationText}
-
-请提供详细的行程安排、景点推荐、美食推荐和注意事项。`;
-        },
         formatDate(date) {
             if (!date) return '';
+            const str = String(date);
+            const matched = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+            if (matched) {
+                return `${matched[1]}年${parseInt(matched[2], 10)}月${parseInt(matched[3], 10)}日`;
+            }
             const d = new Date(date);
+            if (isNaN(d.getTime())) return '';
             return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
         },
-        sendTravelRequestToBackend() {
-            // 构建要发送到后端的数据
-            const formData = {
-                departureDate: this.formatDate(this.travelForm.date),
-                destination: this.travelForm.destination,
-                days: this.travelForm.days,
-                budget: this.travelForm.budget,
-                preferences: this.travelForm.preferences,
-                specialNeeds: this.travelForm.specialNeeds || ''
-            };
-
-            // 这里可以添加实际的API调用
-            // 例如：this.$http.post('/api/travel/recommendations', formData)
-            console.log('发送旅游需求到后端:', formData);
-            
-            // 提示用户
-            this.$message({
-                type: 'success',
-                message: '旅游需求已提交',
-                duration: 2000
-            });
+        askQuick(question) {
+            this.msgValue = question
+            this.submitMsg()
         }
     },
     watch: {
@@ -358,6 +413,13 @@ export default {
                 this.scroll()
             },
             deep: true
+        },
+        chatLoading(val) {
+            if (val && this.isWaitingReply) {
+                this.startThinkingAnimation()
+            } else if (!val) {
+                this.clearThinkingTimer()
+            }
         }
     }
 }

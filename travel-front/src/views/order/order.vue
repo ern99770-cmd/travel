@@ -1,7 +1,7 @@
 <template>
+  <PageLayout>
   <div class="attractions">
-    <headers></headers>
-    <div class="order-container" style="margin-top:20px; padding: 30px; background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%); min-height: 800px;">
+    <div class="order-container page-container">
       <div class="order-wrapper" style="display: flex; gap: 20px; max-width: 1400px; margin: 0 auto;">
         <!-- 景点订单 -->
         <div class="order-section" style="flex: 1; background: #fff; border-radius: 16px; padding: 25px; box-shadow: 0 8px 30px rgba(0,0,0,0.08);">
@@ -74,7 +74,6 @@
         </div>
       </div>
     </div>
-    <bottoms></bottoms>
 
     <!-- 景点订单详情弹窗 -->
     <el-dialog title="预约详情" :visible.sync="dialogVisible" width="40%">
@@ -130,12 +129,11 @@
       </span>
     </el-dialog>
   </div>
+  </PageLayout>
 </template>
 
 <script>
   import {getSysHotelOrderPage,getSysAttractionOrderPage,editSysAttractionOrder,editSysHotelOrder} from '../../api/api'
-  import headers from '@/components/header'
-  import bottoms from '@/components/bottom'
   export default {
     data() {
       return{
@@ -163,10 +161,7 @@
         dialogVisible1: false
       }
     },
-    components: {
-      headers,
-      bottoms
-    },
+    components: {},
     methods: {
       editSysAttractionOrder() {
         var param = {
@@ -278,6 +273,10 @@
    @import url('../../assets/css/attractions.css');
    .order-container {
        width: 100%;
+       background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+       min-height: 800px;
+       padding-top: 0;
+       padding-bottom: var(--page-bottom-gap, 40px);
    }
    .order-wrapper {
        width: 100%;

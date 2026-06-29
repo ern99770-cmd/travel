@@ -65,4 +65,13 @@ public class SysMember implements Serializable {
 
     @TableField(exist = false)
     private Integer totalSpent; // 累计消费（仅用于展示）
+
+    @TableField(exist = false)
+    private Integer pageNumber;
+
+    @TableField(exist = false)
+    private Integer pageSize;
+
+    @TableField(exist = false)
+    private String userName;
 }

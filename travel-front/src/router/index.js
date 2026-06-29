@@ -18,6 +18,7 @@ import center from '@/views/center/center'
 import error404 from '@/views/error/404'
 import ai from '@/views/ai/index'
 import member from '@/views/member/member'
+import myPlan from '@/views/ai/myPlan'
 import travelShare from '@/views/share/travelShare'
 
 Vue.use(VueRouter)
@@ -102,6 +103,11 @@ const routes = [
     path: '/ai',
     name: 'ai',
     component: ai,
+  },
+  {
+    path: '/myPlan',
+    name: 'myPlan',
+    component: myPlan,
   },
   {
     path: '/member',

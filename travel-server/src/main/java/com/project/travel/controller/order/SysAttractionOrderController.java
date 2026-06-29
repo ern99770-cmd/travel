@@ -2,6 +2,7 @@ package com.project.travel.controller.order;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.project.travel.constant.PointsConstants;
 import com.project.travel.domain.Result;
 import com.project.travel.domain.SysAttractionOrder;
 import com.project.travel.domain.SysAttractions;
@@ -11,7 +12,8 @@ import com.project.travel.service.SysAttractionOrderService;
 import com.project.travel.service.SysAttractionsService;
 import com.project.travel.service.UserService;
 import com.project.travel.utils.TokenUtils;
-import lombok.extern.java.Log;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -111,13 +113,22 @@ public class SysAttractionOrderController {
         sysAttractionOrder.setImages(attractions.getImages());
         boolean save = sysAttractionOrderService.save(sysAttractionOrder);
         if (save) {
-            // 计算订单金额并添加积分
             float price = attractions.getPrice() != null ? attractions.getPrice() : 0;
             int orderAmount = Math.round(price * sysAttractionOrder.getNum());
+            int consumePoints = 0;
             if (orderAmount > 0) {
-                sysMemberService.addPointsFromOrder(userId, orderAmount);
+                consumePoints = sysMemberService.addPointsFromOrder(userId, orderAmount);
             }
-            return Result.success(sysAttractionOrder);
+            int behaviorPoints = sysMemberService.awardPointsOnce(
+                    userId,
+                    PointsConstants.BOOK_ATTRACTION,
+                    PointsConstants.TYPE_INTERACTION,
+                    PointsConstants.DESC_BOOK_ATTRACTION,
+                    sysAttractionOrder.getId());
+            Map<String, Object> data = new HashMap<>();
+            data.put("order", sysAttractionOrder);
+            data.put("pointsEarned", behaviorPoints + consumePoints);
+            return Result.success(data);
         } else {
             return Result.fail(ResultCode.COMMON_DATA_OPTION_ERROR.getMessage());
         }

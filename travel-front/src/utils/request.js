@@ -83,14 +83,46 @@ instance.interceptors.response.use(
         }
     },
     function (err) {
-        MessageBox.alert('系统内部错误，请联系管理员维护', '错误', {
-            confirmButtonText: '确定',
-            type: 'error'
+        const status = err.response && err.response.status
+
+        if (status === 1011) {
+            MessageBox.alert('系统登陆已过期，请重新登录', '错误', {
+                confirmButtonText: '确定',
+                type: 'error'
+            }).then(() => {
+                store.dispatch('logout').then(() => {
+                    window.localStorage.removeItem("user_token")
+                    window.localStorage.removeItem("user_info")
+                    location.reload()
+                })
+            })
+            return Promise.reject(err)
+        }
+
+        if (err.code === 'ECONNABORTED' || (err.message && err.message.indexOf('timeout') !== -1)) {
+            Message({
+                message: '请求超时，请稍后重试',
+                type: 'warning',
+                duration: 3000
+            })
+            return Promise.reject(err)
+        }
+
+        if (!err.response) {
+            Message({
+                message: '网络异常，请检查后端服务是否已启动',
+                type: 'error',
+                duration: 3000
+            })
+            return Promise.reject(err)
+        }
+
+        Message({
+            message: '系统内部错误，请联系管理员维护',
+            type: 'error',
+            duration: 3000
         })
-        window.localStorage.removeItem("user_token")
-        window.localStorage.removeItem("user_info")
-        location.reload()
-        return Promise.reject('error')
+        return Promise.reject(err)
     }
 )
  
@@ -99,8 +131,8 @@ export function get(url, params) {
     return instance.get(url, {params})
 }
  
-export function post(url, data) {
-    return instance.post(url, data)
+export function post(url, data, config) {
+    return instance.post(url, data, config)
 }
  
 export default instance;

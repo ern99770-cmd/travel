@@ -6,7 +6,9 @@ import com.project.travel.domain.Result;
 import com.project.travel.domain.SysFavor;
 import com.project.travel.domain.SysLine;
 import com.project.travel.enums.ResultCode;
+import com.project.travel.constant.PointsConstants;
 import com.project.travel.service.SysFavorService;
+import com.project.travel.service.SysMemberService;
 import com.project.travel.service.SysLineService;
 import com.project.travel.utils.TokenUtils;
 import lombok.extern.java.Log;
@@ -15,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author 超级管理员
@@ -31,6 +36,8 @@ public class SysFavorController {
     private SysFavorService sysFavorService;
     @Autowired
     private SysLineService sysLineService;
+    @Autowired
+    private SysMemberService sysMemberService;
 
     /** 分页获取收藏 */
     @PostMapping("getSysFavorPage")
@@ -78,7 +85,15 @@ public class SysFavorController {
         sysFavor.setImages(line.getImages());
         boolean save = sysFavorService.save(sysFavor);
         if (save) {
-            return Result.success();
+            int points = sysMemberService.awardPointsOnce(
+                    sysFavor.getUserId(),
+                    PointsConstants.FAVOR_LINE,
+                    PointsConstants.TYPE_INTERACTION,
+                    PointsConstants.DESC_FAVOR_LINE,
+                    sysFavor.getLineId());
+            Map<String, Object> data = new HashMap<>();
+            data.put("pointsEarned", points);
+            return Result.success(data);
         } else {
             return Result.fail(ResultCode.COMMON_DATA_OPTION_ERROR.getMessage());
         }

@@ -1,60 +1,62 @@
 <template>
-  <div class="line">
-    <headers></headers>
-    <div class="line-container">
-      <!-- 左侧：收藏统计/财经面板 -->
-      <div class="sales-sidebar">
+  <PageLayout>
+  <div class="favor-page">
+    <div class="favor-container page-container">
+      <div class="favor-sidebar">
         <div class="sidebar-title">
-          <i class="el-icon-star-on"></i> 我的收藏资产
+          <i class="el-icon-star-on"></i> 我的收藏
         </div>
-        <div class="ranking-list">
-          <div class="stat-item-simple">
-            <span class="label">收藏总数:</span>
-            <span class="value">{{ total }}</span>
-          </div>
-          <div class="stat-item-simple">
-            <span class="label">资产估值:</span>
-            <span class="value">￥{{ (total * 1280).toLocaleString() }}</span>
-          </div>
+        <div class="stat-block">
+          <div class="stat-number">{{ total }}</div>
+          <div class="stat-label">已收藏路线</div>
         </div>
-        <div class="sidebar-footer-tip">
-          您的收藏列表已按最新热度及实时汇率进行资产评估。
+        <div class="sidebar-tip">
+          <i class="el-icon-info"></i>
+          收藏心仪的路线，方便下次快速查看与预订。
         </div>
+        <el-button type="primary" plain size="small" class="browse-btn" @click="$router.push('/line')">
+          去发现更多路线
+        </el-button>
       </div>
 
-      <!-- 右侧：收藏内容 -->
-      <div class="line-main">
+      <div class="favor-main">
         <div class="section-header">
           <i class="el-icon-collection-tag"></i> 收藏清单
         </div>
-        <div class="line3">
-            <div class="line4" v-for="(item,index) in tableData" :key="index" @click="toInfo(item.lineId)">
-                <div class="line5">
-                    <img style="width:100%;height:100%" :src="item.images.split(',')[0]">
-                </div>
-                <div class="line6">
-                    <div class="line7">{{item.name}}</div>
-                    <div class="line8">{{item.introduce}}</div>
-                </div>
+
+        <div v-if="tableData.length > 0" class="favor-grid">
+          <div class="favor-card" v-for="(item, index) in tableData" :key="index" @click="toInfo(item.lineId)">
+            <div class="favor-card-img">
+              <img :src="item.images.split(',')[0]" alt="">
             </div>
+            <div class="favor-card-body">
+              <div class="favor-card-title">{{ item.name }}</div>
+              <div class="favor-card-desc">{{ item.introduce }}</div>
+            </div>
+          </div>
         </div>
+
+        <el-empty v-else description="还没有收藏任何路线" :image-size="120">
+          <el-button type="primary" size="small" @click="$router.push('/line')">去看看旅游线路</el-button>
+        </el-empty>
+
         <el-pagination
-            background
-            :page-size="search.pageSize"
-            layout="prev, pager, next"
-            @current-change="handleCurrentChange"
-            :total="total">
+          v-if="total > search.pageSize"
+          background
+          :page-size="search.pageSize"
+          layout="prev, pager, next"
+          :current-page="search.pageNumber"
+          @current-change="handleCurrentChange"
+          :total="total">
         </el-pagination>
       </div>
     </div>
-    <bottoms></bottoms>
   </div>
+  </PageLayout>
 </template>
 
 <script>
   import {getSysFavorPage} from '../../api/api'
-  import headers from '@/components/header'
-  import bottoms from '@/components/bottom'
   export default {
     data() {
       return{
@@ -66,10 +68,6 @@
         total: 0,
         tableData: [],
       }
-    },
-    components: {
-      headers,
-      bottoms
     },
     methods: {
       getSysFavorPage() {
@@ -86,7 +84,7 @@
       handleCurrentChange(val) {
         this.search.pageNumber = val
         this.getSysFavorPage()
-      }, 
+      },
     },
     mounted() {
       const userInfo = window.localStorage.getItem("user_info")
@@ -99,26 +97,26 @@
 </script>
 
 <style scoped>
-   @import url('../../assets/css/line.css');
-
-   .line-container {
-     max-width: 1400px;
-     margin: 80px auto 40px;
-     display: flex;
-     gap: 30px;
-     padding: 0 20px;
+   .favor-page {
+     width: 100%;
+     background-color: #f5f7fa;
+     padding-bottom: 40px;
    }
 
-   /* 左侧排名侧边栏 */
-   .sales-sidebar {
-     width: 320px;
+   .favor-container {
+     display: flex;
+     gap: 24px;
+   }
+
+   .favor-sidebar {
+     width: 280px;
      background: #fff;
      border-radius: 12px;
      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-     padding: 25px;
+     padding: 24px;
      height: fit-content;
      position: sticky;
-     top: 100px;
+     top: var(--page-sticky-top, 104px);
    }
 
    .sidebar-title {
@@ -137,41 +135,53 @@
      color: #fadb14;
    }
 
-   .stat-item-simple {
-     display: flex;
-     justify-content: space-between;
-     margin-bottom: 15px;
-     font-size: 15px;
+   .stat-block {
+     text-align: center;
+     padding: 16px 0;
    }
 
-   .stat-item-simple .label {
+   .stat-number {
+     font-size: 36px;
+     font-weight: 700;
+     color: #409EFF;
+     line-height: 1.2;
+   }
+
+   .stat-label {
+     margin-top: 6px;
+     font-size: 14px;
      color: #909399;
    }
 
-   .stat-item-simple .value {
-     font-weight: 700;
-     color: #303133;
-   }
-
-   .sidebar-footer-tip {
-     margin-top: 20px;
-     padding-top: 15px;
-     border-top: 1px solid #f0f2f5;
-     font-size: 12px;
-     color: #c0c4cc;
+   .sidebar-tip {
+     margin-top: 16px;
+     padding: 12px;
+     background: #f5f7fa;
+     border-radius: 8px;
+     font-size: 13px;
+     color: #909399;
      line-height: 1.6;
    }
 
-   /* 右侧内容 */
-   .line-main {
+   .sidebar-tip i {
+     margin-right: 4px;
+     color: #409EFF;
+   }
+
+   .browse-btn {
+     width: 100%;
+     margin-top: 16px;
+   }
+
+   .favor-main {
      flex: 1;
-     overflow: hidden;
+     min-width: 0;
    }
 
    .section-header {
      font-size: 20px;
      font-weight: 600;
-     margin-bottom: 25px;
+     margin-bottom: 20px;
      color: #303133;
      display: flex;
      align-items: center;
@@ -182,41 +192,86 @@
      color: #409EFF;
    }
 
-   .line3 {
-     width: 100%;
+   .favor-grid {
      display: flex;
      flex-wrap: wrap;
-     justify-content: flex-start;
      gap: 20px;
    }
 
-   .line4 {
-     width: 300px;
+   .favor-card {
+     width: calc(33.333% - 14px);
      background: #fff;
-     border-radius: 8px;
+     border-radius: 12px;
      overflow: hidden;
-     box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
      cursor: pointer;
      transition: all 0.3s;
    }
 
-   .line4:hover {
-     transform: translateY(-5px);
+   .favor-card:hover {
+     transform: translateY(-4px);
+     box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+   }
+
+   .favor-card-img {
+     height: 180px;
+     overflow: hidden;
+   }
+
+   .favor-card-img img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     transition: transform 0.3s;
+   }
+
+   .favor-card:hover .favor-card-img img {
+     transform: scale(1.05);
+   }
+
+   .favor-card-body {
+     padding: 16px;
+   }
+
+   .favor-card-title {
+     font-size: 16px;
+     font-weight: 600;
+     color: #303133;
+     margin-bottom: 8px;
+   }
+
+   .favor-card-desc {
+     font-size: 13px;
+     color: #909399;
+     line-height: 1.6;
+     display: -webkit-box;
+     -webkit-line-clamp: 2;
+     -webkit-box-orient: vertical;
+     overflow: hidden;
    }
 
    .el-pagination {
      display: flex;
      justify-content: center;
-     margin-top: 30px;
+     margin-top: 24px;
    }
 
    @media (max-width: 992px) {
-     .line-container {
+     .favor-container {
        flex-direction: column;
      }
-     .sales-sidebar {
+     .favor-sidebar {
        width: 100%;
        position: static;
+     }
+     .favor-card {
+       width: calc(50% - 10px);
+     }
+   }
+
+   @media (max-width: 576px) {
+     .favor-card {
+       width: 100%;
      }
    }
 </style>

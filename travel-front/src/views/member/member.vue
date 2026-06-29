@@ -1,7 +1,7 @@
 <template>
+  <PageLayout>
   <div class="member-center">
-    <headers></headers>
-    <div class="container">
+    <div class="container page-container page-container--narrow">
       <div class="member-header">
         <div class="member-info">
           <div class="avatar">
@@ -29,6 +29,21 @@
               {{ signedToday ? '今日已签到' : '立即签到' }}
             </el-button>
           </div>
+        </div>
+      </div>
+
+      <div class="points-guide">
+        <div class="points-guide__title"><i class="el-icon-star-on"></i> 积分获取方式</div>
+        <div class="points-guide__grid">
+          <span>每日签到 +1（VIP额外+1）</span>
+          <span>预约景点 +10</span>
+          <span>预约酒店 +10</span>
+          <span>AI 对话 +5（每日最多10次）</span>
+          <span>收藏线路 +3</span>
+          <span>点赞印记 +2</span>
+          <span>发表评论 +3</span>
+          <span>发布印记 +5</span>
+          <span>消费满100元 +20积分（VIP +40）</span>
         </div>
       </div>
 
@@ -165,11 +180,10 @@
             <div v-for="record in exchangeRecords" :key="record.id" class="exchange-item">
               <div class="exchange-info">
                 <div class="name">{{ record.relatedName }}</div>
-                <div class="type">
-                  {{ record.type === 0 ? '实物商品' : record.type === 1 ? '纪念品' : record.type === 2 ? '景点门票' : '酒店' }}
-                </div>
+                <div class="type">{{ exchangeTypeLabel(record.type) }}</div>
                 <div class="points">消耗{{ record.pointsUsed }}积分</div>
-                <div v-if="record.amount" class="amount">抵扣¥{{ record.amount }}</div>
+                <div v-if="record.amount && record.type === 5" class="amount">面值¥{{ record.amount }}</div>
+                <div v-else-if="record.amount" class="amount">抵扣¥{{ record.amount }}</div>
                 <div class="time">{{ formatTime(record.createTime) }}</div>
                 <div class="status">
                   {{ record.status === 0 ? '待处理' : record.status === 1 ? '已完成' : '已取消' }}
@@ -201,7 +215,7 @@
           <div class="option-title">VIP会员</div>
           <div class="option-price">¥99/月</div>
           <div class="option-benefits">
-            <p>✓ 100元消费 = 1积分</p>
+            <p>✓ 消费满100元 +40积分</p>
             <p>✓ 签到额外+1积分</p>
             <p>✓ 可兑换满100-20优惠券</p>
             <p>✓ 专属客服</p>
@@ -220,7 +234,7 @@
           </div>
           <div class="option-price" v-else>¥199/月</div>
           <div class="option-benefits">
-            <p>✓ 100元消费 = 2积分</p>
+            <p>✓ 消费满100元 +40积分</p>
             <p>✓ 签到额外+1积分</p>
             <p>✓ 可兑换满100-30优惠券</p>
             <p>✓ 专属客服</p>
@@ -267,18 +281,17 @@
         <el-button type="primary" @click="confirmExchange">确认兑换</el-button>
       </div>
     </el-dialog>
-
-    <bottoms></bottoms>
   </div>
+  </PageLayout>
 </template>
 
 <script>
-import headers from '@/components/header'
-import bottoms from '@/components/bottom'
 import { getUser, getMemberInfo, signIn, getPointsLog, getCoupons, exchangeCoupon, getMyCoupons, getProducts, exchangeProduct, getExchangeRecords, purchaseMember } from '@/api/api'
+import { showPointsEarned, extractPointsEarned } from '@/utils/pointsToast'
+import eventBus from '@/utils/eventBus'
 
 export default {
-  components: { headers, bottoms },
+  components: {},
   data() {
     return {
       userInfo: null,
@@ -311,8 +324,20 @@ export default {
   },
   mounted() {
     this.loadUserInfo()
+    eventBus.$on('points-earned', this.onPointsEarned)
+  },
+  beforeDestroy() {
+    eventBus.$off('points-earned', this.onPointsEarned)
   },
   methods: {
+    onPointsEarned() {
+      if (this.userInfo) {
+        this.loadMemberInfo()
+        if (this.activeTab === 'points') {
+          this.getPointsLog()
+        }
+      }
+    },
     loadUserInfo() {
       getUser().then(res => {
         if (res.code === 1000) {
@@ -338,6 +363,7 @@ export default {
       if (!this.userInfo) return
       signIn({ userId: this.userInfo.id }).then(res => {
         if (res.code === 1000) {
+          showPointsEarned(extractPointsEarned(res), '签到奖励')
           this.$message.success('签到成功')
           this.loadMemberInfo()
         } else {
@@ -397,6 +423,9 @@ export default {
             this.loadMemberInfo()
             this.getCoupons()
             this.getMyCoupons()
+            if (this.activeTab === 'exchange') {
+              this.getExchangeRecords()
+            }
           } else {
             this.$message.error(res.message)
           }
@@ -519,6 +548,17 @@ export default {
       const i = String(date.getMinutes()).padStart(2, '0')
       const s = String(date.getSeconds()).padStart(2, '0')
       return `${y}-${m}-${d} ${h}:${i}:${s}`
+    },
+    exchangeTypeLabel(type) {
+      const map = {
+        0: '实物商品',
+        1: '纪念品',
+        2: '景点门票',
+        3: '酒店',
+        4: '会员购买',
+        5: '优惠券'
+      }
+      return map[type] || '其他'
     }
   }
 }
@@ -531,17 +571,49 @@ export default {
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 20px 40px;
+  width: 100%;
 }
 
 .member-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 16px;
   padding: 40px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color: white;
+}
+
+.points-guide {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.points-guide__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #303133;
+  margin-bottom: 12px;
+}
+
+.points-guide__title i {
+  color: #e6a23c;
+  margin-right: 4px;
+}
+
+.points-guide__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 13px;
+  color: #606266;
+}
+
+.points-guide__grid span {
+  background: #f5f7fa;
+  padding: 6px 12px;
+  border-radius: 6px;
 }
 
 .member-info {

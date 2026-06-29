@@ -13,7 +13,8 @@
             <div @click="toPage('favor')" :class="$route.path == '/favor'?'menu_item':''">我的收藏</div>
             <div @click="toPage('order')" :class="$route.path == '/order'?'menu_item':''">我的预定</div>
             <!-- <div @click="toPage('manage')" :class="$route.path == '/manage'?'menu_item':''">后台管理</div> -->
-            <div @click="toPage('ai')" :class="$route.path == '/ai'?'menu_item':''">财经顾问</div>
+            <div @click="toPage('ai')" :class="$route.path == '/ai'?'menu_item':''">AI规划</div>
+            <div @click="toPage('myPlan')" :class="$route.path == '/myPlan'?'menu_item':''">我的行程</div>
             <div @click="toPage('member')" :class="$route.path == '/member'?'menu_item':''">会员中心</div>
         </div>
       </div>
@@ -63,6 +64,8 @@
           this.$router.push("/order")
         } else if (name == "ai") {
           this.$router.push("/ai")
+        } else if (name == "myPlan") {
+          this.$router.push("/myPlan")
         } else if (name == "member") {
           this.$router.push("/member")
         }

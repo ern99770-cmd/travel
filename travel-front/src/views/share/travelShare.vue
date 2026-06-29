@@ -1,10 +1,10 @@
 <template>
+  <PageLayout>
   <div class="travel-share">
-    <headers></headers>
     <div class="share-container">
       <div class="share-publish-card">
         <div class="publish-header">
-          <img v-if="userInfo && userInfo.avatar" :src="$store.state.HOST + userInfo.avatar" class="user-avatar">
+          <img v-if="userInfo && userInfo.avatar" :src="getImageUrl(userInfo.avatar)" class="user-avatar" @error="handleImageError">
           <img v-else :src="require('@/assets/image/image 2.png')" class="user-avatar">
           <el-input 
             size="medium" 
@@ -46,7 +46,7 @@
         
         <div v-for="(item, index) in tableData" :key="index" class="share-card">
           <div class="share-header">
-            <img :src="$store.state.HOST + item.avatar" class="share-avatar">
+            <img :src="getImageUrl(item.avatar)" class="share-avatar" @error="handleImageError">
             <div class="share-user-info">
               <span class="share-user-name">{{ item.userName }}</span>
               <span class="share-time">{{ formatTime(item.createTime) }}</span>
@@ -61,17 +61,46 @@
           </div>
           
           <div v-if="item.title" class="share-title">{{ item.title }}</div>
-          
-          <div class="share-content">{{ item.content }}</div>
+
+          <!-- AI 行程：Markdown 渲染 + 结构化展示 -->
+          <div v-if="item.type === 3" class="ai-plan-wrapper">
+            <div v-if="item.aiPlanMeta" class="ai-plan-meta">
+              <span v-if="item.aiPlanMeta.departureDate" class="meta-tag">
+                <i class="el-icon-date"></i>{{ item.aiPlanMeta.departureDate }}
+              </span>
+              <span v-if="item.aiPlanMeta.days" class="meta-tag">
+                <i class="el-icon-time"></i>{{ item.aiPlanMeta.days }}
+              </span>
+              <span v-if="item.aiPlanMeta.budget" class="meta-tag budget">
+                <i class="el-icon-wallet"></i>{{ item.aiPlanMeta.budget }}
+              </span>
+              <span v-if="item.aiPlanMeta.preferences" class="meta-tag pref">
+                <i class="el-icon-star-off"></i>{{ item.aiPlanMeta.preferences }}
+              </span>
+            </div>
+            <div
+              :class="['ai-plan-content', { collapsed: !item.expanded }]"
+              v-html="renderMarkdown(getAiPlanBody(item.content))">
+            </div>
+            <div
+              v-if="isLongAiContent(item.content)"
+              class="ai-plan-expand"
+              @click="item.expanded = !item.expanded">
+              <i :class="item.expanded ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"></i>
+              {{ item.expanded ? '收起行程' : '展开完整行程' }}
+            </div>
+          </div>
+          <div v-else class="share-content">{{ item.content }}</div>
           
           <div v-if="item.images" class="share-images">
             <div class="image-grid">
               <img 
                 v-for="(img, imgIndex) in getImagesArray(item.images)" 
                 :key="imgIndex" 
-                :src="img" 
+                :src="getImageUrl(img)" 
                 class="share-image"
-                @click="previewImage(img)">
+                @error="handleImageError"
+                @click="previewImage(getImageUrl(img))">
             </div>
           </div>
           
@@ -96,7 +125,7 @@
             </div>
             <div v-else-if="item.comments && item.comments.length > 0" class="comments-list">
               <div v-for="(comment, commentIndex) in item.comments" :key="commentIndex" class="comment-item">
-                <img :src="$store.state.HOST + comment.avatar" class="comment-avatar">
+                <img :src="getImageUrl(comment.avatar)" class="comment-avatar" @error="handleImageError">
                 <div class="comment-content">
                   <div class="comment-header">
                     <span class="comment-user-name">{{ comment.userName }}</span>
@@ -138,7 +167,6 @@
         </el-pagination>
       </div>
     </div>
-    <bottoms></bottoms>
 
     <el-dialog 
       title="发布旅游分享" 
@@ -162,7 +190,8 @@
             <el-select v-model="publishForm.type" placeholder="请选择类型">
               <el-option :label="getTypeLabel(0)" :value="0"></el-option>
               <el-option :label="getTypeLabel(1)" :value="1"></el-option>
-              <el-option :label="getTypeLabel(2)" :value="2"></el-option>
+                        <el-option :label="getTypeLabel(2)" :value="2"></el-option>
+                        <el-option :label="getTypeLabel(3)" :value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="地点">
@@ -195,13 +224,16 @@
       @close="previewVisible = false">
     </el-image-viewer>
   </div>
+  </PageLayout>
 </template>
 
 <script>
   import {getSysTravelSharePage, saveSysTravelShare, likeShare, getCommentsByTargetId, saveSysComments} from '../../api/api'
-  import headers from '@/components/header'
-  import bottoms from '@/components/bottom'
+  import { showPointsEarned, extractPointsEarned } from '@/utils/pointsToast'
   import request from '@/utils/request'
+  import { marked } from 'marked'
+
+  marked.setOptions({ breaks: true, gfm: true })
   export default {
     data() {
       return{
@@ -212,7 +244,8 @@
           { label: '全部', value: null },
           { label: '普通分享', value: 0 },
           { label: '心得体会', value: 1 },
-          { label: '旅游攻略', value: 2 }
+          { label: '旅游攻略', value: 2 },
+          { label: 'AI行程', value: 3 }
         ],
         search: {
           title: "",
@@ -236,10 +269,7 @@
         previewIndex: 0
       }
     },
-    components: {
-      headers,
-      bottoms
-    },
+    components: {},
     methods: {
       changeFilter(type) {
         this.currentFilter = type
@@ -251,13 +281,21 @@
         this.loading = true
         getSysTravelSharePage(this.search).then(res => {
           if (res.code == 1000) {
-            this.tableData = res.data.records.map(item => ({
-              ...item,
-              showComments: false,
-              comments: [],
-              commentsLoading: false,
-              commentText: ''
-            }))
+            this.tableData = res.data.records.map(item => {
+              const row = {
+                ...item,
+                showComments: false,
+                comments: [],
+                commentsLoading: false,
+                commentText: '',
+                expanded: false,
+                aiPlanMeta: null
+              }
+              if (item.type === 3) {
+                row.aiPlanMeta = this.parseAiPlanMeta(item.content)
+              }
+              return row
+            })
             this.total = res.data.total
           }
           this.loading = false
@@ -287,13 +325,34 @@
         const types = {
           0: '普通分享',
           1: '心得体会',
-          2: '旅游攻略'
+          2: '旅游攻略',
+          3: 'AI行程'
         }
         return types[type] || '普通分享'
       },
       getImagesArray(images) {
         if (!images) return []
         return images.split(',')
+      },
+      getImageUrl(path) {
+        const fallback = require('@/assets/image/image 2.png')
+        if (!path) return fallback
+        const host = this.$store.state.HOST
+        if (path.startsWith('http://') || path.startsWith('https://')) {
+          try {
+            return host + new URL(path).pathname
+          } catch (e) {
+            return fallback
+          }
+        }
+        if (path.startsWith('/api/')) return path
+        if (path.startsWith('/img/') || path.startsWith('/video/') || path.startsWith('/file/')) {
+          return host + path
+        }
+        return host + (path.startsWith('/') ? path : '/img/' + path)
+      },
+      handleImageError(e) {
+        e.target.src = require('@/assets/image/image 2.png')
       },
       openPublishDialog() {
         const userInfoStr = window.localStorage.getItem("user_info")
@@ -316,11 +375,11 @@
           const formData = new FormData()
           formData.append('file', file)
           
-          request.post('/upload', formData, {
+          request.post('/common/uploadImg', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
           }).then(res => {
             if (res.code == 1000) {
-              this.publishForm.images.push(this.$store.state.HOST + res.data)
+              this.publishForm.images.push(res.data)
             }
           })
         }
@@ -342,6 +401,7 @@
         
         saveSysTravelShare(data).then(res => {
           if (res.code == 1000) {
+            showPointsEarned(extractPointsEarned(res), '发布分享奖励')
             this.$message.success("发布成功")
             this.publishDialogVisible = false
             this.publishForm = {
@@ -368,8 +428,12 @@
         
         likeShare({ shareId: item.id }).then(res => {
           if (res.code == 1000) {
+            const wasLiked = item.isLiked
             item.isLiked = !item.isLiked
             item.likes += item.isLiked ? 1 : -1
+            if (item.isLiked && !wasLiked) {
+              showPointsEarned(extractPointsEarned(res), '点赞奖励')
+            }
           } else {
             this.$message.error(res.message)
           }
@@ -417,6 +481,7 @@
           targetType: 2
         }).then(res => {
           if (res.code == 1000) {
+            showPointsEarned(extractPointsEarned(res), '评论奖励')
             this.$message.success("评论成功")
             item.commentText = ''
             this.getComments(item)
@@ -434,6 +499,42 @@
         if (userInfoStr) {
           this.userInfo = JSON.parse(userInfoStr)
         }
+      },
+      renderMarkdown(content) {
+        return marked.parse(content || '')
+      },
+      parseAiPlanMeta(content) {
+        if (!content) return null
+        const meta = {}
+        const patterns = {
+          departureDate: /出发时间[：:]\s*(.+)/,
+          destination: /目的地[：:]\s*(.+)/,
+          days: /游玩天数[：:]\s*(.+)/,
+          budget: /预算[：:]\s*(.+)/,
+          preferences: /偏好[：:]\s*(.+)/,
+        }
+        Object.keys(patterns).forEach(key => {
+          const match = content.match(patterns[key])
+          if (match) meta[key] = match[1].trim()
+        })
+        return Object.keys(meta).length ? meta : null
+      },
+      getAiPlanBody(content) {
+        if (!content) return ''
+        const headingIdx = content.indexOf('###')
+        if (headingIdx > 0) return content.substring(headingIdx)
+        const lines = content.split('\n')
+        let start = 0
+        for (let i = 0; i < lines.length; i++) {
+          if (lines[i].startsWith('###') || lines[i].startsWith('##')) {
+            start = i
+            break
+          }
+        }
+        return lines.slice(start).join('\n')
+      },
+      isLongAiContent(content) {
+        return content && content.length > 800
       }
     },
     mounted() {
@@ -453,8 +554,8 @@
 
 .share-container {
   max-width: 800px;
-  margin: 80px auto 40px;
-  padding: 0 20px;
+  margin: 0 auto var(--page-bottom-gap, 40px);
+  padding: 0 var(--page-gutter, 20px);
 }
 
 .share-publish-card {
@@ -602,6 +703,11 @@
 .type-2 {
   background-color: #f0f9eb;
   color: #67c23a;
+}
+
+.type-3 {
+  background-color: #eef3ff;
+  color: #1a60ea;
 }
 
 .share-title {
@@ -831,5 +937,204 @@
 
 .upload-add i {
   font-size: 28px;
+}
+
+/* AI 行程卡片样式 */
+.ai-plan-wrapper {
+  margin: 0 20px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f0f7ff 0%, #fafbff 50%, #fff 100%);
+  border: 1px solid #e3eeff;
+  overflow: hidden;
+}
+
+.ai-plan-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px 16px 0;
+}
+
+.meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: #fff;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #1a60ea;
+  border: 1px solid #d6e4ff;
+  box-shadow: 0 1px 4px rgba(26, 96, 234, 0.08);
+}
+
+.meta-tag.budget {
+  color: #e6a23c;
+  border-color: #faecd8;
+  background: #fdf6ec;
+}
+
+.meta-tag.pref {
+  color: #67c23a;
+  border-color: #e1f3d8;
+  background: #f0f9eb;
+}
+
+.ai-plan-content {
+  padding: 12px 16px 16px;
+  line-height: 1.75;
+  font-size: 14px;
+  color: #4a5568;
+  transition: max-height 0.4s ease;
+}
+
+.ai-plan-content.collapsed {
+  max-height: 420px;
+  overflow: hidden;
+  position: relative;
+}
+
+.ai-plan-content.collapsed::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(transparent, #f5f9ff);
+  pointer-events: none;
+}
+
+.ai-plan-expand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #1a60ea;
+  background: #eef3ff;
+  border-top: 1px solid #e3eeff;
+  transition: background 0.2s;
+}
+
+.ai-plan-expand:hover {
+  background: #e3eeff;
+}
+</style>
+
+<style>
+/* Markdown 内容样式（v-html 需非 scoped） */
+.ai-plan-content h3 {
+  margin: 20px 0 10px;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a60ea;
+  background: linear-gradient(90deg, #eef3ff 0%, transparent 100%);
+  border-left: 3px solid #1a60ea;
+  border-radius: 0 8px 8px 0;
+}
+
+.ai-plan-content h3:first-child {
+  margin-top: 4px;
+}
+
+.ai-plan-content h4 {
+  margin: 14px 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ai-plan-content h4::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1a60ea;
+  flex-shrink: 0;
+}
+
+.ai-plan-content p {
+  margin: 6px 0;
+  line-height: 1.75;
+}
+
+.ai-plan-content strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.ai-plan-content ul,
+.ai-plan-content ol {
+  margin: 8px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.ai-plan-content ul li,
+.ai-plan-content ol li {
+  position: relative;
+  padding: 6px 0 6px 20px;
+  border-bottom: 1px dashed #eef2f7;
+  line-height: 1.6;
+}
+
+.ai-plan-content ul li:last-child,
+.ai-plan-content ol li:last-child {
+  border-bottom: none;
+}
+
+.ai-plan-content ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 4px;
+  color: #1a60ea;
+  font-size: 12px;
+}
+
+.ai-plan-content ol {
+  counter-reset: ol-counter;
+}
+
+.ai-plan-content ol li {
+  counter-increment: ol-counter;
+}
+
+.ai-plan-content ol li::before {
+  content: counter(ol-counter);
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: #1a60ea;
+  border-radius: 50%;
+}
+
+.ai-plan-content hr {
+  border: none;
+  border-top: 1px dashed #dce6f5;
+  margin: 16px 0;
+}
+
+.ai-plan-content blockquote {
+  margin: 10px 0;
+  padding: 10px 14px;
+  background: #fff8e6;
+  border-left: 3px solid #e6a23c;
+  border-radius: 0 8px 8px 0;
+  color: #7a6a4a;
+  font-size: 13px;
 }
 </style>

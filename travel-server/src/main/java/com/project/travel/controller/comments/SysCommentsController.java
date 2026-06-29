@@ -6,6 +6,8 @@ import com.project.travel.domain.Result;
 import com.project.travel.domain.SysComments;
 import com.project.travel.domain.User;
 import com.project.travel.enums.ResultCode;
+import com.project.travel.constant.PointsConstants;
+import com.project.travel.service.SysMemberService;
 import com.project.travel.service.SysCommentsService;
 import com.project.travel.service.UserService;
 import com.project.travel.utils.TokenUtils;
@@ -14,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 超级管理员
@@ -32,6 +36,9 @@ public class SysCommentsController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SysMemberService sysMemberService;
 
     /** 分页获取评论 */
     @PostMapping("getSysCommentsPage")
@@ -114,7 +121,15 @@ public class SysCommentsController {
             
             boolean save = sysCommentsService.save(sysComments);
             if (save) {
-                return Result.success();
+                int points = sysMemberService.awardPointsOnce(
+                        userId,
+                        PointsConstants.COMMENT,
+                        PointsConstants.TYPE_INTERACTION,
+                        PointsConstants.DESC_COMMENT,
+                        sysComments.getId());
+                Map<String, Object> data = new HashMap<>();
+                data.put("pointsEarned", points);
+                return Result.success(data);
             } else {
                 return Result.fail(ResultCode.COMMON_DATA_OPTION_ERROR.getMessage());
             }

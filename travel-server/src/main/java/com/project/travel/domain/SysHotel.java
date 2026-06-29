@@ -85,4 +85,8 @@ public class SysHotel implements Serializable {
 
     @TableField(exist = false)
     private Integer pageSize;
+
+    /** 按目的地筛选（关联景点/地址/名称模糊匹配） */
+    @TableField(exist = false)
+    private String destination;
 }

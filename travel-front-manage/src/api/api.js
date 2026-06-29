@@ -152,3 +152,35 @@ export const removeSysRotations = (params) => get("/rotations/removeSysRotations
 //图表
 export const getManageData = (params) => get("/login/getManageData",params)
 
+// AI 统计
+export const getAiStats = () => get("/ai/admin/stats")
+
+//-------------------------------优惠券管理---------------------------------------
+export const getSysCouponPage = (params) => post("/admin/coupon/getSysCouponPage", params)
+export const getSysCouponById = (params) => get("/admin/coupon/getSysCouponById", params)
+export const saveSysCoupon = (params) => post("/admin/coupon/saveSysCoupon", params)
+export const editSysCoupon = (params) => post("/admin/coupon/editSysCoupon", params)
+export const removeSysCoupon = (params) => get("/admin/coupon/removeSysCoupon", params)
+export const toggleCouponStatus = (params) => post("/admin/coupon/toggleStatus", params)
+export const adjustCouponStock = (params) => post("/admin/coupon/adjustStock", params)
+
+//-------------------------------积分商品管理---------------------------------------
+export const getSysProductPage = (params) => post("/admin/product/getSysProductPage", params)
+export const getSysProductById = (params) => get("/admin/product/getSysProductById", params)
+export const saveSysProduct = (params) => post("/admin/product/saveSysProduct", params)
+export const editSysProduct = (params) => post("/admin/product/editSysProduct", params)
+export const removeSysProduct = (params) => get("/admin/product/removeSysProduct", params)
+export const toggleProductStatus = (params) => post("/admin/product/toggleStatus", params)
+
+//-------------------------------兑换记录管理---------------------------------------
+export const getSysExchangePage = (params) => post("/admin/exchange/getSysExchangePage", params)
+export const completeExchange = (params) => post("/admin/exchange/complete", params)
+export const cancelExchange = (params) => post("/admin/exchange/cancel", params)
+export const getExchangeStats = () => get("/admin/exchange/stats")
+
+//-------------------------------会员管理---------------------------------------
+export const getSysMemberPage = (params) => post("/admin/member/getSysMemberPage", params)
+export const getMemberPointsLog = (params) => get("/admin/member/getPointsLog", params)
+export const adjustMemberPoints = (params) => post("/admin/member/adjustPoints", params)
+export const getMemberStats = () => get("/admin/member/stats")
+

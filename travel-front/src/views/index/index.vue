@@ -1,6 +1,6 @@
 <template>
+  <PageLayout>
   <div class="index">
-    <headers></headers>
     
     <!-- 调试信息 -->
     <div v-if="error" class="debug-info">
@@ -151,14 +151,12 @@
         <!-- <el-button style="margin-top:10px" size="small" type="primary" plain @click="toLine">查看更多</el-button> -->
       </div>
     </div>
-    <bottoms></bottoms>
   </div>
+  </PageLayout>
 </template>
 
 <script>
   import {getSysRotationsList, getSysAttractionsIndex, getUserCount, getSysLineIndex, getSysAttractionsHot, getSysAttractionsRecommend} from '../../api/api'
-  import headers from '@/components/header'
-  import bottoms from '@/components/bottom'
   export default {
     data() {
       return{
@@ -172,8 +170,6 @@
       }
     },
     components: {
-      headers,
-      bottoms
     },
     methods: {
       toAttraction() {
