@@ -4,8 +4,10 @@ import { Message, MessageBox } from 'element-ui'  //导入element-ui组件库
  
 // 创建axios的对象
 const instance = axios.create({
-    baseURL: "http://localhost:8080",  //配置固定域名
-    timeout: 5000
+    baseURL: process.env.NODE_ENV === 'production' 
+        ? (process.env.VUE_APP_API_BASE_URL || "https://your-backend-service.zeabur.app")  // 生产环境使用实际URL
+        : "http://localhost:8080",  // 开发环境
+    timeout: 30000
 })
  
 // 请求拦截

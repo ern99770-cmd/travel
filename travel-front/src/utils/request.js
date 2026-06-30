@@ -5,9 +5,9 @@ import { Message, MessageBox } from 'element-ui'  //导入element-ui组件库
 // 创建axios的对象
 const instance = axios.create({
     baseURL: process.env.NODE_ENV === 'production' 
-        ? "http://localhost:8080"  // 生产环境使用实际URL
+        ? (process.env.VUE_APP_API_BASE_URL || "https://your-backend-service.zeabur.app")  // 生产环境使用实际URL
         : "/api",  // 开发环境使用代理
-    timeout: 5000
+    timeout: 30000
 })
  
 // 请求拦截

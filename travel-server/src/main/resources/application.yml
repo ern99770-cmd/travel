@@ -25,7 +25,7 @@ spring:
       # 热部署开关
       enabled: true
   profiles:
-    active: dev
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   #  修改上传文件大小限制
   servlet:
     multipart:
@@ -33,12 +33,12 @@ spring:
       max-request-size: 100MB
   #ai配置
   openai:
-    api-key: sk-4b962a59abda4ee6a0bc6f7dd37b7416
+    api-key: ${OPENAI_API_KEY:sk-4b962a59abda4ee6a0bc6f7dd37b7416}
   xunfei:
     client:
-      appid: 3864d35b
-      api-key: 731b9435630e1972458285c2a28076c7
-      api-secret: ZDI1NjRlNDMyYzk4MTg3NzZlZTFlMTYw
+      appid: ${XUNFEI_APPID:3864d35b}
+      api-key: ${XUNFEI_API_KEY:731b9435630e1972458285c2a28076c7}
+      api-secret: ${XUNFEI_API_SECRET:ZDI1NjRlNDMyYzk4MTg3NzZlZTFlMTYw}
 # myBatis-plus配置
 mybatis-plus:
   global-config:

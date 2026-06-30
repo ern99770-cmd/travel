@@ -1,304 +1,94 @@
-2026-06-29 15:55:48.312 [restartedMain] INFO  com.project.travel.TravelApplication - Starting TravelApplication using Java 1.8.0_202 on dilireba with PID 18632 (C:\maven\travel_system\travel\travel\travel-server\target\classes started by solitude in C:\maven\travel_system\travel\travel\travel-server)
-2026-06-29 15:55:48.319 [restartedMain] INFO  com.project.travel.TravelApplication - The following 1 profile is active: "dev"
-2026-06-29 15:55:48.419 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-06-29 15:55:48.420 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-06-29 15:55:49.258 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-06-29 15:55:49.262 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-06-29 15:55:49.315 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 30 ms. Found 0 Redis repository interfaces.
-2026-06-29 15:55:50.319 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
-2026-06-29 15:55:50.328 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-06-29 15:55:50.330 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-06-29 15:55:50.330 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.83]
-2026-06-29 15:55:50.434 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-06-29 15:55:50.435 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2015 ms
-2026-06-29 15:55:50.987 [restartedMain] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
-2026-06-29 15:55:52.742 [restartedMain] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
-2026-06-29 15:55:56.157 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
-2026-06-29 15:55:56.190 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-06-29 15:55:56.226 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
-2026-06-29 15:55:56.239 [restartedMain] INFO  com.project.travel.TravelApplication - Started TravelApplication in 8.582 seconds (JVM running for 9.217)
-2026-06-29 15:56:23.863 [http-nio-8080-exec-4] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-06-29 15:56:23.864 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-06-29 15:56:23.868 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 3 ms
-2026-06-29 15:56:32.934 [http-nio-8080-exec-12] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 15:56:32.934 [http-nio-8080-exec-11] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 15:56:32.934 [http-nio-8080-exec-9] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 15:56:32.936 [http-nio-8080-exec-12] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
-2026-06-29 15:56:32.938 [http-nio-8080-exec-9] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 15:56:32.938 [http-nio-8080-exec-11] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 15:56:32.942 [http-nio-8080-exec-12] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 15:56:32.942 [http-nio-8080-exec-9] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 15:56:32.942 [http-nio-8080-exec-11] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 15:56:33.185 [http-nio-8080-exec-12] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 15:56:33.202 [http-nio-8080-exec-9] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：24
-2026-06-29 15:56:33.204 [http-nio-8080-exec-11] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：24
-2026-06-29 16:03:59.998 [http-nio-8080-exec-27] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=北京省, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 16:03:59.998 [http-nio-8080-exec-28] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=北京省, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 16:04:00.000 [http-nio-8080-exec-28] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：北京省
-2026-06-29 16:03:59.999 [http-nio-8080-exec-27] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：北京省
-2026-06-29 16:04:00.002 [http-nio-8080-exec-27] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：北京省
-2026-06-29 16:04:00.002 [http-nio-8080-exec-28] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：北京省
-2026-06-29 16:04:00.016 [http-nio-8080-exec-28] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 16:04:00.016 [http-nio-8080-exec-27] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 16:04:00.091 [http-nio-8080-exec-27] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 16:04:00.101 [http-nio-8080-exec-28] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：16
-2026-06-29 16:04:14.305 [http-nio-8080-exec-31] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=甘肃, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 16:04:14.307 [http-nio-8080-exec-30] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=甘肃, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 16:04:14.307 [http-nio-8080-exec-30] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：甘肃
-2026-06-29 16:04:14.307 [http-nio-8080-exec-31] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：甘肃
-2026-06-29 16:04:14.307 [http-nio-8080-exec-31] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：甘肃
-2026-06-29 16:04:14.307 [http-nio-8080-exec-30] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：甘肃
-2026-06-29 16:04:14.307 [http-nio-8080-exec-30] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 16:04:14.307 [http-nio-8080-exec-31] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 16:04:14.330 [http-nio-8080-exec-30] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：2
-2026-06-29 16:04:14.330 [http-nio-8080-exec-31] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：2
-2026-06-29 16:06:40.755 [http-nio-8080-exec-41] INFO  com.project.travel.handle.MyMetaObjectHandler - 公共字段自动填充[insert]...
-2026-06-29 16:07:44.484 [http-nio-8080-exec-53] INFO  com.project.travel.handle.MyMetaObjectHandler - 公共字段自动填充[update]...
-2026-06-29 16:07:44.511 [http-nio-8080-exec-53] INFO  com.project.travel.handle.MyMetaObjectHandler - 公共字段自动填充[insert]...
-2026-06-29 16:36:34.871 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
-2026-06-29 16:36:34.877 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
-2026-06-29 17:49:40.019 [restartedMain] INFO  com.project.travel.TravelApplication - Starting TravelApplication using Java 1.8.0_202 on dilireba with PID 9524 (C:\maven\travel_system\travel\travel\travel-server\target\classes started by solitude in C:\maven\travel_system\travel\travel\travel-server)
-2026-06-29 17:49:40.021 [restartedMain] INFO  com.project.travel.TravelApplication - The following 1 profile is active: "dev"
-2026-06-29 17:49:40.119 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-06-29 17:49:40.119 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-06-29 17:49:40.984 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-06-29 17:49:40.988 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-06-29 17:49:41.046 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 37 ms. Found 0 Redis repository interfaces.
-2026-06-29 17:49:41.941 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
-2026-06-29 17:49:41.950 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-06-29 17:49:41.953 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-06-29 17:49:41.953 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.83]
-2026-06-29 17:49:42.032 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-06-29 17:49:42.032 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1912 ms
-2026-06-29 17:49:42.479 [restartedMain] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
-2026-06-29 17:49:43.897 [restartedMain] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
-2026-06-29 17:49:46.972 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
-2026-06-29 17:49:46.996 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-06-29 17:49:47.024 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
-2026-06-29 17:49:47.037 [restartedMain] INFO  com.project.travel.TravelApplication - Started TravelApplication in 7.651 seconds (JVM running for 8.232)
-2026-06-29 17:50:49.514 [http-nio-8080-exec-4] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-06-29 17:50:49.514 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-06-29 17:50:49.516 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 2 ms
-2026-06-29 17:52:10.277 [http-nio-8080-exec-42] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:52:10.277 [http-nio-8080-exec-41] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:52:10.281 [http-nio-8080-exec-42] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 17:52:10.281 [http-nio-8080-exec-41] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
-2026-06-29 17:52:10.282 [http-nio-8080-exec-42] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:10.282 [http-nio-8080-exec-41] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:10.301 [http-nio-8080-exec-41] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:52:10.316 [http-nio-8080-exec-42] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：24
-2026-06-29 17:52:36.311 [http-nio-8080-exec-44] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:52:36.312 [http-nio-8080-exec-45] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:52:36.313 [http-nio-8080-exec-44] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
-2026-06-29 17:52:36.313 [http-nio-8080-exec-45] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 17:52:36.313 [http-nio-8080-exec-45] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:36.314 [http-nio-8080-exec-44] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:36.335 [http-nio-8080-exec-44] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:52:36.336 [http-nio-8080-exec-45] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：24
-2026-06-29 17:52:36.463 [http-nio-8080-exec-47] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=南昌, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:52:36.463 [http-nio-8080-exec-47] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：南昌
-2026-06-29 17:52:36.466 [http-nio-8080-exec-47] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：南昌
-2026-06-29 17:52:36.477 [http-nio-8080-exec-47] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:52:36.477 [http-nio-8080-exec-48] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=南昌, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:52:36.478 [http-nio-8080-exec-48] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：南昌
-2026-06-29 17:52:36.478 [http-nio-8080-exec-48] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：南昌
-2026-06-29 17:52:36.478 [http-nio-8080-exec-48] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:52:36.492 [http-nio-8080-exec-48] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：0
-2026-06-29 17:52:36.492 [http-nio-8080-exec-47] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：0
-2026-06-29 17:52:40.539 [http-nio-8080-exec-51] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:52:40.539 [http-nio-8080-exec-51] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 17:52:40.539 [http-nio-8080-exec-50] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:52:40.539 [http-nio-8080-exec-50] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
-2026-06-29 17:52:40.539 [http-nio-8080-exec-51] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:40.541 [http-nio-8080-exec-50] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:40.556 [http-nio-8080-exec-50] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:52:40.562 [http-nio-8080-exec-51] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：24
-2026-06-29 17:52:41.184 [http-nio-8080-exec-53] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:52:41.184 [http-nio-8080-exec-54] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:52:41.184 [http-nio-8080-exec-53] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
-2026-06-29 17:52:41.185 [http-nio-8080-exec-54] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 17:52:41.185 [http-nio-8080-exec-54] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:41.186 [http-nio-8080-exec-53] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:41.196 [http-nio-8080-exec-53] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:52:41.199 [http-nio-8080-exec-54] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：24
-2026-06-29 17:52:41.789 [http-nio-8080-exec-56] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:52:41.789 [http-nio-8080-exec-71] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:52:41.790 [http-nio-8080-exec-71] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 17:52:41.790 [http-nio-8080-exec-56] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
-2026-06-29 17:52:41.791 [http-nio-8080-exec-56] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:41.791 [http-nio-8080-exec-71] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:41.801 [http-nio-8080-exec-56] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:52:41.803 [http-nio-8080-exec-71] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：24
-2026-06-29 17:52:43.027 [http-nio-8080-exec-59] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:52:43.027 [http-nio-8080-exec-60] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:52:43.028 [http-nio-8080-exec-59] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
-2026-06-29 17:52:43.028 [http-nio-8080-exec-60] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 17:52:43.028 [http-nio-8080-exec-59] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:43.028 [http-nio-8080-exec-60] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:43.041 [http-nio-8080-exec-59] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:52:43.045 [http-nio-8080-exec-60] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：24
-2026-06-29 17:52:44.055 [http-nio-8080-exec-62] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=北京省, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:52:44.054 [http-nio-8080-exec-63] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=北京省, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:52:44.056 [http-nio-8080-exec-62] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：北京省
-2026-06-29 17:52:44.056 [http-nio-8080-exec-63] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：北京省
-2026-06-29 17:52:44.056 [http-nio-8080-exec-62] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：北京省
-2026-06-29 17:52:44.057 [http-nio-8080-exec-63] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：北京省
-2026-06-29 17:52:44.057 [http-nio-8080-exec-63] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:52:44.057 [http-nio-8080-exec-62] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:52:44.070 [http-nio-8080-exec-62] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:52:44.085 [http-nio-8080-exec-63] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：16
-2026-06-29 17:52:48.036 [http-nio-8080-exec-66] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:52:48.037 [http-nio-8080-exec-66] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 17:52:48.037 [http-nio-8080-exec-65] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:52:48.037 [http-nio-8080-exec-65] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
-2026-06-29 17:52:48.037 [http-nio-8080-exec-66] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:48.037 [http-nio-8080-exec-65] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:52:48.048 [http-nio-8080-exec-65] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:52:48.051 [http-nio-8080-exec-66] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：24
-2026-06-29 17:52:50.839 [http-nio-8080-exec-69] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=南昌, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:52:50.839 [http-nio-8080-exec-68] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=南昌, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:52:50.840 [http-nio-8080-exec-68] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：南昌
-2026-06-29 17:52:50.840 [http-nio-8080-exec-68] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：南昌
-2026-06-29 17:52:50.839 [http-nio-8080-exec-69] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：南昌
-2026-06-29 17:52:50.840 [http-nio-8080-exec-68] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:52:50.840 [http-nio-8080-exec-69] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：南昌
-2026-06-29 17:52:50.841 [http-nio-8080-exec-69] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:52:50.846 [http-nio-8080-exec-68] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：0
-2026-06-29 17:52:50.848 [http-nio-8080-exec-69] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：0
-2026-06-29 17:55:27.203 [http-nio-8080-exec-73] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:55:27.203 [http-nio-8080-exec-73] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
-2026-06-29 17:55:27.205 [http-nio-8080-exec-73] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:55:27.206 [http-nio-8080-exec-61] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:55:27.209 [http-nio-8080-exec-61] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 17:55:27.210 [http-nio-8080-exec-61] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:55:27.228 [http-nio-8080-exec-73] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:55:27.234 [http-nio-8080-exec-61] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：29
-2026-06-29 17:56:34.083 [http-nio-8080-exec-98] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=南昌, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:56:34.083 [http-nio-8080-exec-98] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：南昌
-2026-06-29 17:56:34.084 [http-nio-8080-exec-97] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=人文历史, location=南昌, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:56:34.084 [http-nio-8080-exec-97] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：南昌
-2026-06-29 17:56:34.084 [http-nio-8080-exec-98] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：南昌
-2026-06-29 17:56:34.085 [http-nio-8080-exec-98] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:56:34.085 [http-nio-8080-exec-97] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：南昌
-2026-06-29 17:56:34.088 [http-nio-8080-exec-97] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND scenic_type = #{ew.paramNameValuePairs.MPGENVAL2} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL3}) ORDER BY create_time DESC
-2026-06-29 17:56:34.100 [http-nio-8080-exec-97] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：0
-2026-06-29 17:56:34.101 [http-nio-8080-exec-98] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：5
-2026-06-29 17:56:41.355 [http-nio-8080-exec-91] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=人文历史, location=南昌, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:56:41.357 [http-nio-8080-exec-91] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：南昌
-2026-06-29 17:56:41.357 [http-nio-8080-exec-91] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：南昌
-2026-06-29 17:56:41.357 [http-nio-8080-exec-91] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND scenic_type = #{ew.paramNameValuePairs.MPGENVAL2} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL3}) ORDER BY create_time DESC
-2026-06-29 17:56:41.356 [http-nio-8080-exec-100] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=南昌, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:56:41.358 [http-nio-8080-exec-100] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：南昌
-2026-06-29 17:56:41.378 [http-nio-8080-exec-100] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：南昌
-2026-06-29 17:56:41.378 [http-nio-8080-exec-100] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:56:41.384 [http-nio-8080-exec-91] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：0
-2026-06-29 17:56:41.387 [http-nio-8080-exec-100] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：5
-2026-06-29 17:56:57.305 [http-nio-8080-exec-96] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:56:57.305 [http-nio-8080-exec-96] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
-2026-06-29 17:56:57.305 [http-nio-8080-exec-96] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:56:57.307 [http-nio-8080-exec-95] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:56:57.307 [http-nio-8080-exec-95] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
-2026-06-29 17:56:57.308 [http-nio-8080-exec-95] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
-2026-06-29 17:56:57.329 [http-nio-8080-exec-95] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:56:57.355 [http-nio-8080-exec-96] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：29
-2026-06-29 17:57:03.827 [http-nio-8080-exec-89] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=南昌, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:57:03.827 [http-nio-8080-exec-89] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：南昌
-2026-06-29 17:57:03.827 [http-nio-8080-exec-99] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=南昌, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:57:03.827 [http-nio-8080-exec-89] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：南昌
-2026-06-29 17:57:03.827 [http-nio-8080-exec-99] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：南昌
-2026-06-29 17:57:03.828 [http-nio-8080-exec-89] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:57:03.828 [http-nio-8080-exec-99] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：南昌
-2026-06-29 17:57:03.829 [http-nio-8080-exec-99] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:57:03.850 [http-nio-8080-exec-89] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：5
-2026-06-29 17:57:03.850 [http-nio-8080-exec-99] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：5
-2026-06-29 17:57:08.280 [http-nio-8080-exec-1] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=北京省, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
-2026-06-29 17:57:08.281 [http-nio-8080-exec-1] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：北京省
-2026-06-29 17:57:08.281 [http-nio-8080-exec-8] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=北京省, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
-2026-06-29 17:57:08.281 [http-nio-8080-exec-8] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：北京省
-2026-06-29 17:57:08.281 [http-nio-8080-exec-1] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：北京省
-2026-06-29 17:57:08.281 [http-nio-8080-exec-8] INFO  c.p.t.c.attractions.SysAttractionsController - 应用地区筛选：北京省
-2026-06-29 17:57:08.282 [http-nio-8080-exec-8] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:57:08.282 [http-nio-8080-exec-1] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1} AND location LIKE #{ew.paramNameValuePairs.MPGENVAL2}) ORDER BY create_time DESC
-2026-06-29 17:57:08.292 [http-nio-8080-exec-8] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
-2026-06-29 17:57:08.292 [http-nio-8080-exec-1] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：16
-2026-06-29 17:57:13.628 [http-nio-8080-exec-4] INFO  com.project.travel.handle.MyMetaObjectHandler - 公共字段自动填充[update]...
-2026-06-29 17:58:01.826 [http-nio-8080-exec-28] INFO  com.project.travel.handle.MyMetaObjectHandler - 公共字段自动填充[update]...
-2026-06-29 17:58:08.825 [http-nio-8080-exec-34] INFO  com.project.travel.handle.MyMetaObjectHandler - 公共字段自动填充[update]...
-2026-06-29 17:58:11.687 [http-nio-8080-exec-40] INFO  com.project.travel.handle.MyMetaObjectHandler - 公共字段自动填充[update]...
-2026-06-29 17:58:11.701 [http-nio-8080-exec-40] INFO  com.project.travel.handle.MyMetaObjectHandler - 公共字段自动填充[insert]...
-2026-06-29 19:04:37.947 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
-2026-06-29 19:04:40.110 [Thread-7] INFO  org.apache.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
-2026-06-29 19:04:40.111 [Thread-7] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
-2026-06-29 19:04:40.114 [Thread-7] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Destroying Spring FrameworkServlet 'dispatcherServlet'
-2026-06-29 19:04:40.144 [Thread-7] INFO  org.apache.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
-2026-06-29 19:04:40.158 [Thread-7] INFO  org.apache.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
-2026-06-29 19:04:40.164 [Thread-7] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
-2026-06-29 19:04:40.167 [Thread-7] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
-2026-06-29 19:04:40.898 [restartedMain] INFO  com.project.travel.TravelApplication - Starting TravelApplication using Java 1.8.0_202 on dilireba with PID 9524 (C:\maven\travel_system\travel\travel\travel-server\target\classes started by solitude in C:\maven\travel_system\travel\travel\travel-server)
-2026-06-29 19:04:40.899 [restartedMain] INFO  com.project.travel.TravelApplication - The following 1 profile is active: "dev"
-2026-06-29 19:04:41.508 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-06-29 19:04:41.510 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-06-29 19:04:41.586 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 75 ms. Found 0 Redis repository interfaces.
-2026-06-29 19:04:42.098 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
-2026-06-29 19:04:42.099 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-06-29 19:04:42.099 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-06-29 19:04:42.099 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.83]
-2026-06-29 19:04:42.152 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-06-29 19:04:42.152 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1241 ms
-2026-06-29 19:04:42.711 [restartedMain] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
-2026-06-29 19:04:43.017 [restartedMain] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-2} inited
-2026-06-29 19:04:46.754 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
-2026-06-29 19:04:46.798 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-06-29 19:04:46.819 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
-2026-06-29 19:04:46.828 [restartedMain] INFO  com.project.travel.TravelApplication - Started TravelApplication in 6.193 seconds (JVM running for 4508.023)
-2026-06-29 19:04:46.832 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
-2026-06-29 19:04:48.304 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 93 class path changes (0 additions, 0 deletions, 93 modifications)
-2026-06-29 19:04:50.587 [Thread-9] INFO  org.apache.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
-2026-06-29 19:04:50.587 [Thread-9] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
-2026-06-29 19:04:50.596 [Thread-9] INFO  org.apache.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
-2026-06-29 19:04:50.605 [Thread-9] INFO  org.apache.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
-2026-06-29 19:04:50.608 [Thread-9] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-2} closing ...
-2026-06-29 19:04:50.616 [Thread-9] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-2} closed
-2026-06-29 19:04:51.128 [restartedMain] INFO  com.project.travel.TravelApplication - Starting TravelApplication using Java 1.8.0_202 on dilireba with PID 9524 (C:\maven\travel_system\travel\travel\travel-server\target\classes started by solitude in C:\maven\travel_system\travel\travel\travel-server)
-2026-06-29 19:04:51.129 [restartedMain] INFO  com.project.travel.TravelApplication - The following 1 profile is active: "dev"
-2026-06-29 19:04:51.539 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-06-29 19:04:51.539 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-06-29 19:04:51.571 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 32 ms. Found 0 Redis repository interfaces.
-2026-06-29 19:04:51.773 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
-2026-06-29 19:04:51.774 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-06-29 19:04:51.774 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-06-29 19:04:51.774 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.83]
-2026-06-29 19:04:51.815 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-06-29 19:04:51.815 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 681 ms
-2026-06-29 19:04:51.868 [restartedMain] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
-2026-06-29 19:04:52.040 [restartedMain] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-3} inited
-2026-06-29 19:04:55.275 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
-2026-06-29 19:04:55.304 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-06-29 19:04:55.319 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
-2026-06-29 19:04:55.327 [restartedMain] INFO  com.project.travel.TravelApplication - Started TravelApplication in 4.286 seconds (JVM running for 4516.522)
-2026-06-29 19:04:55.328 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
-2026-06-29 21:30:10.184 [http-nio-8080-exec-4] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-06-29 21:30:10.191 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-06-29 21:30:10.219 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 27 ms
-2026-06-29 22:25:05.663 [lettuce-nioEventLoop-9-1] INFO  io.lettuce.core.protocol.CommandHandler - null Unexpected exception during request: java.io.IOException: 远程主机强迫关闭了一个现有的连接。
-java.io.IOException: 远程主机强迫关闭了一个现有的连接。
-	at sun.nio.ch.SocketDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:192)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:380)
-	at io.netty.buffer.PooledByteBuf.setBytes(PooledByteBuf.java:254)
-	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1132)
-	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:357)
-	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:151)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
-	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-2026-06-29 22:25:05.753 [lettuce-eventExecutorLoop-7-1] INFO  io.lettuce.core.protocol.ConnectionWatchdog - Reconnecting, last destination was localhost/127.0.0.1:6379
-2026-06-29 22:25:08.428 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-3} closing ...
-2026-06-29 22:25:08.429 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-3} closed
+2026-06-30 10:43:57.303 [restartedMain] INFO  com.project.travel.TravelApplication - Starting TravelApplication using Java 1.8.0_202 on dilireba with PID 30144 (C:\maven\travel_system\travel\travel\travel-server\target\classes started by solitude in C:\maven\travel_system\travel\travel\travel-server)
+2026-06-30 10:43:57.311 [restartedMain] INFO  com.project.travel.TravelApplication - The following 1 profile is active: "dev"
+2026-06-30 10:43:57.415 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-30 10:43:57.415 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-30 10:43:58.211 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-06-30 10:43:58.214 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-06-30 10:43:58.250 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 23 ms. Found 0 Redis repository interfaces.
+2026-06-30 10:43:59.927 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2026-06-30 10:43:59.945 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-06-30 10:43:59.948 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-30 10:43:59.949 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.83]
+2026-06-30 10:44:00.119 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-06-30 10:44:00.119 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2703 ms
+2026-06-30 10:44:01.068 [restartedMain] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
+2026-06-30 10:44:04.896 [restartedMain] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-06-30 10:44:13.131 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-06-30 10:44:13.172 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-06-30 10:44:13.225 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2026-06-30 10:44:13.242 [restartedMain] INFO  com.project.travel.TravelApplication - Started TravelApplication in 16.495 seconds (JVM running for 17.193)
+2026-06-30 10:52:30.883 [http-nio-8080-exec-2] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-30 10:52:30.883 [http-nio-8080-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-30 10:52:30.885 [http-nio-8080-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-06-30 10:52:58.759 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-06-30 10:52:58.772 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-06-30 10:53:03.921 [restartedMain] INFO  com.project.travel.TravelApplication - Starting TravelApplication using Java 1.8.0_202 on dilireba with PID 6928 (C:\maven\travel_system\travel\travel\travel-server\target\classes started by solitude in C:\maven\travel_system\travel\travel\travel-server)
+2026-06-30 10:53:03.924 [restartedMain] INFO  com.project.travel.TravelApplication - The following 1 profile is active: "dev"
+2026-06-30 10:53:04.054 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-30 10:53:04.055 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-30 10:53:05.327 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-06-30 10:53:05.332 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-06-30 10:53:05.436 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 76 ms. Found 0 Redis repository interfaces.
+2026-06-30 10:53:07.048 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2026-06-30 10:53:07.063 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-06-30 10:53:07.066 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-30 10:53:07.067 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.83]
+2026-06-30 10:53:07.297 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-06-30 10:53:07.300 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3243 ms
+2026-06-30 10:53:08.194 [restartedMain] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
+2026-06-30 10:53:12.367 [restartedMain] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-06-30 10:53:19.208 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-06-30 10:53:19.243 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-06-30 10:53:19.285 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2026-06-30 10:53:19.300 [restartedMain] INFO  com.project.travel.TravelApplication - Started TravelApplication in 16.484 seconds (JVM running for 17.537)
+2026-06-30 10:53:21.045 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-06-30 10:53:21.051 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-06-30 10:53:23.064 [restartedMain] INFO  com.project.travel.TravelApplication - Starting TravelApplication using Java 1.8.0_202 on dilireba with PID 25292 (C:\maven\travel_system\travel\travel\travel-server\target\classes started by solitude in C:\maven\travel_system\travel\travel\travel-server)
+2026-06-30 10:53:23.066 [restartedMain] INFO  com.project.travel.TravelApplication - The following 1 profile is active: "dev"
+2026-06-30 10:53:23.149 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-30 10:53:23.149 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-30 10:53:23.722 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-06-30 10:53:23.724 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-06-30 10:53:23.753 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 20 ms. Found 0 Redis repository interfaces.
+2026-06-30 10:53:24.367 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2026-06-30 10:53:24.375 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-06-30 10:53:24.376 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-30 10:53:24.376 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.83]
+2026-06-30 10:53:24.455 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-06-30 10:53:24.456 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1306 ms
+2026-06-30 10:53:24.798 [restartedMain] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
+2026-06-30 10:53:26.175 [restartedMain] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-06-30 10:53:29.054 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-06-30 10:53:29.083 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-06-30 10:53:29.117 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2026-06-30 10:53:29.130 [restartedMain] INFO  com.project.travel.TravelApplication - Started TravelApplication in 6.616 seconds (JVM running for 7.068)
+2026-06-30 10:53:33.017 [http-nio-8080-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-30 10:53:33.018 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-30 10:53:33.021 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2026-06-30 10:53:44.399 [http-nio-8080-exec-23] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
+2026-06-30 10:53:44.399 [http-nio-8080-exec-24] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
+2026-06-30 10:53:44.402 [http-nio-8080-exec-23] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
+2026-06-30 10:53:44.402 [http-nio-8080-exec-24] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
+2026-06-30 10:53:44.403 [http-nio-8080-exec-24] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
+2026-06-30 10:53:44.403 [http-nio-8080-exec-23] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
+2026-06-30 10:53:44.436 [http-nio-8080-exec-23] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
+2026-06-30 10:53:44.466 [http-nio-8080-exec-24] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：29
+2026-06-30 10:54:50.268 [http-nio-8080-exec-74] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
+2026-06-30 10:54:50.268 [http-nio-8080-exec-75] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
+2026-06-30 10:54:50.269 [http-nio-8080-exec-75] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
+2026-06-30 10:54:50.269 [http-nio-8080-exec-74] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
+2026-06-30 10:54:50.270 [http-nio-8080-exec-75] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
+2026-06-30 10:54:50.270 [http-nio-8080-exec-74] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
+2026-06-30 10:54:50.283 [http-nio-8080-exec-74] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
+2026-06-30 10:54:50.306 [http-nio-8080-exec-75] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：29
+2026-06-30 11:21:54.261 [http-nio-8080-exec-10] INFO  com.project.travel.handle.MyMetaObjectHandler - 公共字段自动填充[update]...
+2026-06-30 11:21:58.072 [http-nio-8080-exec-3] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=, location=, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=9)
+2026-06-30 11:21:58.072 [http-nio-8080-exec-3] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：
+2026-06-30 11:21:58.072 [http-nio-8080-exec-7] INFO  c.p.t.c.attractions.SysAttractionsController - 查询景点参数：SysAttractions(id=null, name=null, price=null, introduce=null, content=null, num=null, realName=null, images=null, scenicType=null, location=null, pv=null, open=null, time=null, state=1, createBy=null, createTime=null, updateBy=null, updateTime=null, pageNumber=1, pageSize=100)
+2026-06-30 11:21:58.073 [http-nio-8080-exec-7] INFO  c.p.t.c.attractions.SysAttractionsController - location 参数值：null
+2026-06-30 11:21:58.073 [http-nio-8080-exec-3] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
+2026-06-30 11:21:58.075 [http-nio-8080-exec-7] INFO  c.p.t.c.attractions.SysAttractionsController - 最终查询条件 SQL：(state = #{ew.paramNameValuePairs.MPGENVAL1}) ORDER BY create_time DESC
+2026-06-30 11:21:58.089 [http-nio-8080-exec-3] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：9
+2026-06-30 11:21:58.091 [http-nio-8080-exec-7] INFO  c.p.t.c.attractions.SysAttractionsController - 查询结果数量：29
+2026-06-30 11:33:08.575 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-06-30 11:33:08.581 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed

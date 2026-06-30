@@ -5,12 +5,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.project.travel.domain.Result;
 import com.project.travel.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @version 1.0
@@ -24,6 +29,12 @@ public class CommonController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired(required = false)
+    private DataSource dataSource;
+    
+    @Autowired(required = false)
+    private StringRedisTemplate redisTemplate;
 
     /**
     * @description: 错误转发地址
@@ -136,6 +147,62 @@ public class CommonController {
         } catch (IOException e) {
             return Result.fail("上传失败");
         }
+    }
+
+    /**
+     * @description: 健康检查端点
+     * @return: 健康状态
+     * @date: 2024
+     */
+    @GetMapping("/health")
+    public Result health() {
+        Map<String, Object> healthInfo = new HashMap<>();
+        healthInfo.put("status", "UP");
+        healthInfo.put("timestamp", System.currentTimeMillis());
+        
+        // 检查数据库连接
+        try {
+            if (dataSource != null) {
+                Connection connection = dataSource.getConnection();
+                boolean isValid = connection.isValid(2);
+                connection.close();
+                healthInfo.put("database", isValid ? "UP" : "DOWN");
+            } else {
+                healthInfo.put("database", "UNKNOWN");
+            }
+        } catch (Exception e) {
+            healthInfo.put("database", "DOWN");
+            healthInfo.put("databaseError", e.getMessage());
+        }
+        
+        // 检查 Redis 连接
+        try {
+            if (redisTemplate != null) {
+                redisTemplate.getConnectionFactory().getConnection().ping();
+                healthInfo.put("redis", "UP");
+            } else {
+                healthInfo.put("redis", "UNKNOWN");
+            }
+        } catch (Exception e) {
+            healthInfo.put("redis", "DOWN");
+            healthInfo.put("redisError", e.getMessage());
+        }
+        
+        return Result.success(healthInfo);
+    }
+    
+    /**
+     * @description: 根路径健康检查
+     * @return: 健康状态
+     * @date: 2024
+     */
+    @GetMapping("/")
+    public Result root() {
+        Map<String, Object> info = new HashMap<>();
+        info.put("service", "Travel System Backend");
+        info.put("status", "running");
+        info.put("version", "1.0.0");
+        return Result.success(info);
     }
 
 }
